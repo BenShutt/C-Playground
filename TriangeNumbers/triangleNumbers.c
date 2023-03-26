@@ -6,10 +6,10 @@
 // A (row, column) coordinate
 typedef struct Coordinate
 {
-    // Row index (Y)
+    // Row number (Y)
     int row;
 
-    // Column index (X)
+    // Column number (X)
     int column;
 } Coordinate;
 
@@ -32,7 +32,7 @@ int columnForIndexAndRow(int index, int row)
     return row + index - triangleNumber(row);
 }
 
-// Map a 1D index to a 2D coordinate
+// Map 1D index to 2D coordinate
 Coordinate mapIndexToCoordinate(int index) 
 {
     Coordinate coordinate;
