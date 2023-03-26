@@ -57,6 +57,8 @@ void test(int index, int row, int column)
     }
 }
 
+// ============================== Main ==============================
+
 int main()
 {
     test(1, 1, 1);
