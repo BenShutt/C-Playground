@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall -Wextra
-RM = rm -f
+RM = rm -rf
 
 TARGET = triangleNumbers
 
@@ -11,4 +11,5 @@ $(TARGET): $(TARGET).c
 
 clean:
 	$(RM) $(TARGET)
+	$(RM) *.dSYM
 
