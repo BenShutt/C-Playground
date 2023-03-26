@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <math.h>
 
-// An (row, column) coordinate of integers
+// A (row, column) coordinate
 typedef struct Coordinate
 {
     // Row index (Y)
