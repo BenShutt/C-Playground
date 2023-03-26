@@ -22,7 +22,7 @@ int triangleNumber(int n)
 // Map 1D index to row
 int rowForIndex(int index)
 {
-    double numerator = -1 + sqrt(8 * (double)index + 1);
+    double numerator = -1 + sqrt(8 * index + 1);
     return (int)ceil(numerator / 2);
 }
 
