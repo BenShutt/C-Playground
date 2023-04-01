@@ -79,7 +79,7 @@ $$\frac{-1+\sqrt{8n+1}}{2}\leq i<\frac{1+\sqrt{8n+1}}{2}$$
 
 Since the left hand side is precisely $1$ less than the right hand side, $i$ must be the (single) integer between these two values. Since the left hand side could be equal to we have
 
-$$i=\Bigg\lfloor\frac{-1+\sqrt{8n+1}}{2}\Bigg\rfloor$$
+$$i=\Bigg\lceil\frac{-1+\sqrt{8n+1}}{2}\Bigg\rceil$$
 
 The column can be determined by the remaining elements to this row's triangle number
 
