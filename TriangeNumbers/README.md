@@ -25,7 +25,7 @@ These numbers can be expressed as 2D (row, column) grid coordinates like
 ...
 ```
 
-We want to determine the function that maps any number to its corresponding row and column.
+We want to find the function that maps any number to its corresponding row and column.
 
 ## Examples
 
@@ -41,7 +41,7 @@ We want to determine the function that maps any number to its corresponding row 
 
 ## Expressed Formally
 
-Define $\N=\{1,2,3,\ldots,\infty\}$. Then $\forall n\in\N$ we want to find the function $f\colon\N\to\N^2$ and $i,j\in\N^{2}$ so that
+Define $\N=\{1,2,3,\ldots,\infty\}$. We want to find the function $f\colon\N\to\N^2$ such that $\forall n\in\N$ $\exists i,j\in\N^{2}$ so that
 
 $$f(n)=(i,j)$$
 
@@ -51,11 +51,11 @@ Denote the $ith$ triangle number with
 
 $$T_i=\frac{1}{2}i(i+1)$$
 
-We observe that, for row $i$, that $\forall n\in\N$ it follows
+$\forall n\in\N$ there must be a row $i$ in which is resides. It follows that
 
 $$T_{i-1}<n\leq T_{i}$$
 
-expanding $T_i$ yields
+which, expanding $T_i$, is equivalent to
 
 $$\frac{1}{2}(i-1)i<n\leq\frac{1}{2}i(i+1)$$
 
@@ -69,7 +69,7 @@ Completing the square and multiplying by a positive factor gives
 
 $$\left(i-\frac{1}{2}\right)^2<\frac{8n+1}{4}$$
 
-Since $\sqrt{x}$ is monotonically increasing and $\sqrt{8n+1}\geq3$ we must take the positive root resulting in
+Since $\sqrt{x}$ is monotonically increasing, $n\geq 1$, and $\sqrt{8n+1}\geq3$ we must take the positive root resulting in
 
 $$i<\frac{1+\sqrt{8n+1}}{2}$$
 
@@ -77,10 +77,14 @@ Following similar logic for the other inequality we acquire
 
 $$\frac{-1+\sqrt{8n+1}}{2}\leq i<\frac{1+\sqrt{8n+1}}{2}$$
 
-Since the left hand side is precisely $1$ less than the right hand side, $i$ must be the (single) integer between these two values. Since the left hand side could be equal to we have
+Since the left hand side is precisely $1$ less than the right hand side, $i$ must be the (single) integer between these two values. Given the left hand side could be equal to we have
 
 $$i=\Bigg\lceil\frac{-1+\sqrt{8n+1}}{2}\Bigg\rceil$$
 
-The column can be determined by the remaining elements to this row's triangle number
+The column can be determined from the row with
 
-$$j=i+n-T_i$$
+$$j=n+i-T_i$$
+
+or equally
+
+$$j=n-T_{i-1}$$
