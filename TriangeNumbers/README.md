@@ -51,17 +51,15 @@ Denote the $ith$ triangle number with
 
 $$T_i=\frac{1}{2}i(i+1)$$
 
-$\forall n\in\N$ there must be a row $i$ in which it resides. It follows that
+$\forall n\in\N$ there must be a row, $i$, in which it resides. Since the last column of any row is a triangle number, the number $n$ must be (strictly) greater than the triangle number of the previous row and less than or equal to the triangle number of the current row.
 
 $$T_{i-1}<n\leq T_{i}$$
 
-which, expanding $T_i$, is equivalent to
+which expanded is equivalent to
 
 $$\frac{1}{2}(i-1)i<n\leq\frac{1}{2}i(i+1)$$
 
-Since the last column of any row is a triangle number, the number $n$ must be (strictly) greater than the triangle number of the previous row and less than or equal to the triangle number of the current row.
-
-This gives us two inequalities to solve. Consider the left $<$ case
+This gives us two inequalities to solve. Consider first the left $<$ case
 
 $$\frac{1}{2}(i-1)i<n$$
 
@@ -69,7 +67,7 @@ Completing the square and multiplying by a positive factor gives
 
 $$\left(i-\frac{1}{2}\right)^2<\frac{8n+1}{4}$$
 
-Since $\sqrt{x}$ is monotonically increasing, $n\geq 1$, and $\sqrt{8n+1}\geq3$ we must take the positive root resulting in
+Since $\sqrt{x}$ is monotonically increasing, $n\geq 1$, and $\sqrt{8n+1}\geq3$ we must take the positive root. This results in
 
 $$i<\frac{1+\sqrt{8n+1}}{2}$$
 
@@ -81,7 +79,7 @@ Since the left hand side is precisely $1$ less than the right hand side, $i$ mus
 
 $$i=\Bigg\lceil\frac{-1+\sqrt{8n+1}}{2}\Bigg\rceil$$
 
-The column can be determined from the row with
+The column can be determined from the row, $i$, and number, $n$, with
 
 $$j=n+i-T_i$$
 
