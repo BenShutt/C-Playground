@@ -51,7 +51,7 @@ Denote the $ith$ triangle number with
 
 $$T_i=\frac{1}{2}i(i+1)$$
 
-$\forall n\in\N$ there must be a row $i$ in which is resides. It follows that
+$\forall n\in\N$ there must be a row $i$ in which it resides. It follows that
 
 $$T_{i-1}<n\leq T_{i}$$
 
