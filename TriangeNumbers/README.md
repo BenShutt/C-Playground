@@ -65,7 +65,7 @@ $$\frac{1}{2}(i-1)i<n$$
 
 Completing the square and multiplying by a positive factor gives
 
-$$\left(i-\frac{1}{2}\right)^2<\frac{8n+1}{4}$$
+$$\left(i-\frac{1}{2}\right)^2 < \frac{8n+1}{4}$$
 
 Since $\sqrt{x}$ is monotonically increasing, $n\geq 1$, and $\sqrt{8n+1}\geq3$ we must take the positive root. This results in
 
