@@ -39,9 +39,9 @@ We want to find the function that maps any number to its corresponding row and c
 ...
 ```
 
-## Expressed Formally
+## Formally
 
-Define $\mathbb{N}=\{1,2,3,\ldots,\infty\}$. We want to find the function $f\colon\mathbb{N}\to\mathbb{N}^2$ such that $\forall n\in\mathbb{N}$ $\exists i,j\in\mathbb{N}^{2}$ so that
+Define $\mathbb{N} = \{1,2,3,\ldots,\infty\}$. We want to find the function $f \colon \mathbb{N} \to \mathbb{N}^2$ such that $\forall n \in \mathbb{N}$ $\exists i, j \in \mathbb{N}^{2}$ so that
 
 $$f(n)=(i,j)$$
 
@@ -49,40 +49,40 @@ $$f(n)=(i,j)$$
 
 Denote the $ith$ triangle number with
 
-$$T_i=\frac{1}{2}i(i+1)$$
+$$T_{i} = \frac{1}{2} i (i+1)$$
 
-$\forall n\in\mathbb{N}$ there must be a row, $i$, in which it resides. Since the last column of any row is a triangle number, the number $n$ must be (strictly) greater than the triangle number of the previous row and less than or equal to the triangle number of the current row.
+$\forall n \in \mathbb{N}$ there must be a row, $i$, in which it resides. Since the last column of any row is a triangle number, the number $n$ must be (strictly) greater than the triangle number of the previous row and less than or equal to the triangle number of the current row.
 
-$$T_{i-1} < n\leq T_i$$
+$$T_{i-1} < n \leq T_{i}$$
 
 which expanded is equivalent to
 
-$$\frac{1}{2}(i-1)i < n\leq\frac{1}{2}i(i+1)$$
+$$\frac{1}{2} (i-1) i < n \leq \frac{1}{2} i (i+1)$$
 
 This gives us two inequalities to solve. Consider first the left $<$ case
 
-$$\frac{1}{2}(i-1)i < n$$
+$$\frac{1}{2} (i-1) i < n$$
 
 Completing the square and multiplying by a positive factor gives
 
-$$\left(i-\frac{1}{2}\right)^2 < \frac{8n+1}{4}$$
+$$\left(i - \frac{1}{2} \right)^{2} < \frac{8n + 1}{4}$$
 
-Since $\sqrt{x}$ is monotonically increasing, $n\geq 1$, and $\sqrt{8n+1}\geq3$ we must take the positive root. This results in
+Since $\sqrt{x}$ is monotonically increasing, $n \geq 1$, and $\sqrt{8n + 1} \geq 3$ we must take the positive root. This results in
 
-$$i<\frac{1+\sqrt{8n+1}}{2}$$
+$$i < \frac{1 + \sqrt{8n + 1}}{2}$$
 
 Following similar logic for the other inequality we acquire
 
-$$\frac{-1+\sqrt{8n+1}}{2}\leq i<\frac{1+\sqrt{8n+1}}{2}$$
+$$\frac{-1 + \sqrt{8n + 1}}{2} \leq i < \frac{1 + \sqrt{8n + 1}}{2}$$
 
 Since the left hand side is precisely $1$ less than the right hand side, $i$ must be the (single) integer between these two values. Given the left hand side could be equal to we have
 
-$$i=\Bigg\lceil\frac{-1+\sqrt{8n+1}}{2}\Bigg\rceil$$
+$$i=\Bigg\lceil\frac{-1 + \sqrt{8n + 1}}{2}\Bigg\rceil$$
 
 The column can be determined from the row, $i$, and number, $n$, with
 
-$$j=n+i-T_i$$
+$$j = n + i - T_{i}$$
 
 or equally
 
-$$j=n-T_{i-1}$$
+$$j = n - T_{i-1}$$
