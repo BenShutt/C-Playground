@@ -17,4 +17,4 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 EXE="${SCRIPT_DIR}/triangleNumbers"
 
 # Run
-make && ${EXE} && make clean
+make clean && make && ${EXE} && make clean
