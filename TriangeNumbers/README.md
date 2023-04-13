@@ -51,9 +51,9 @@ Denote the $ith$ triangle number with
 
 $$T_i=\frac{1}{2}i(i+1)$$
 
-$\forall n\in\N$ there must be a row, $i$, in which it resides. Since the last column of any row is a triangle number, the number $n$ must be (strictly) greater than the triangle number of the previous row and less than or equal to the triangle number of the current row.
+$\forall n\in\mathbb{N}$ there must be a row, $i$, in which it resides. Since the last column of any row is a triangle number, the number $n$ must be (strictly) greater than the triangle number of the previous row and less than or equal to the triangle number of the current row.
 
-$$T_{i-1}<n\leq T_{i}$$
+$$T_{i-1} < n\leq T_i$$
 
 which expanded is equivalent to
 
