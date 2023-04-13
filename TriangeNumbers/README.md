@@ -41,7 +41,7 @@ We want to find the function that maps any number to its corresponding row and c
 
 ## Formally
 
-Define $\mathbb{N} = \{ 1, 2, 3, \ldots, \infty \}$. We want to find the function $f \colon \mathbb{N} \to \mathbb{N}^2$ such that $\forall n \in \mathbb{N}$ $\exists i, j \in \mathbb{N}^{2}$ so that
+Define $\mathbb{N}=\{1,2,3,\ldots,\infty\}$. We want to find the function $f \colon \mathbb{N} \to \mathbb{N}^2$ such that $\forall n \in \mathbb{N}$ $\exists i, j \in \mathbb{N}^{2}$ so that
 
 $$f(n)=(i,j)$$
 
