@@ -57,7 +57,7 @@ $$T_{i-1} < n\leq T_i$$
 
 which expanded is equivalent to
 
-$$\frac{1}{2}(i-1)i<n\leq\frac{1}{2}i(i+1)$$
+$$\frac{1}{2}(i-1)i < n\leq\frac{1}{2}i(i+1)$$
 
 This gives us two inequalities to solve. Consider first the left $<$ case
 
