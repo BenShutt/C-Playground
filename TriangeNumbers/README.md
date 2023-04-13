@@ -61,7 +61,7 @@ $$\frac{1}{2}(i-1)i < n\leq\frac{1}{2}i(i+1)$$
 
 This gives us two inequalities to solve. Consider first the left $<$ case
 
-$$\frac{1}{2}(i-1)i<n$$
+$$\frac{1}{2}(i-1)i < n$$
 
 Completing the square and multiplying by a positive factor gives
 
