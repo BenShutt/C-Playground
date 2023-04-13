@@ -86,3 +86,8 @@ $$j = n + i - T_{i}$$
 or equally
 
 $$j = n - T_{i-1}$$
+
+## Notes
+
+* On Github, the `\{` and `\}` for curly brackets doesn't seem to render.
+* The "following similar logic" for the less than or equal to expression is pretty loose - the jump needs to be clearer.
