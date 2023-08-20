@@ -48,10 +48,10 @@ int main()
     check(bytes >= 0, "Failed to receive data"); // TODO: Handle 0? Just check not -1?
 
     // Print the received message 
-    printf("[Server] Received: '%s'\n", buf);
+    printf("Received: '%s'\n", buf);
 
     // Write message
-    char* response = "HTTP/1.1 200 OK\nConnection: Close\nContent-Type: text/plain\n\nSuccess-xyz\n";
+    char* response = "HTTP/1.1 200 OK\nConnection: Close\nContent-Type: text/plain\n\nSuccess!\n";
 
     // Send the message back to the client
     ssize_t count = send(connection_fd, response, strlen(response), 0);

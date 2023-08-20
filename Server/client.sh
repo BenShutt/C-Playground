@@ -4,7 +4,7 @@
 # Script: client.sh
 # Usage: ./client.sh
 #
-# Send a message to the server
+# Send a HTTP message to the server
 #
 
 # Set defaults
