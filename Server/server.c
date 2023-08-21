@@ -4,12 +4,20 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#include "definitions.h"
+#include "check.h"
 
 // Port used for testing
 #define PORT 666
 
 // Ref: https://www.ibm.com/docs/en/zos/2.3.0?topic=programs-c-socket-tcp-server
+
+const char *make_response()
+{
+    return "HTTP/1.1 200 OK\n"
+        "Connection: Close\n"
+        "Content-Type: text/plain\n\n"
+        "Success!\n";
+}
 
 int main()
 {
@@ -52,7 +60,7 @@ int main()
     printf("Received: '%s'\n", buf);
 
     // Write message
-    char* response = "HTTP/1.1 200 OK\nConnection: Close\nContent-Type: text/plain\n\nSuccess!\n";
+    const char* response = make_response();
 
     // Send the message back to the client
     ssize_t count = send(connection_fd, response, strlen(response), 0);

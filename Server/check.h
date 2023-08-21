@@ -1,5 +1,5 @@
-#ifndef __definitions_h__
-#define __definitions_h__
+#ifndef __check_h__
+#define __check_h__
 
 #include <stdio.h>
 #include <stdlib.h>
