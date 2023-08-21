@@ -13,6 +13,7 @@
 
 int main()
 {
+    // File descriptors that may need to be closed regardless of success
     int socket_fd = -1;
     int connection_fd = -1;
 
