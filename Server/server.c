@@ -3,15 +3,23 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #include "check.h"
 
 // Port used for testing
 #define PORT 666
 
+// Number of bytes in buffer
+#define BUF_SIZE 1024
+
+// Signal to stop the server
+#define STOP "stop"
+
 // Ref: https://www.ibm.com/docs/en/zos/2.3.0?topic=programs-c-socket-tcp-server
 
-const char *make_response()
+// HTTP response to send to the client from the server
+const char *make_http_response()
 {
     return "HTTP/1.1 200 OK\n"
         "Connection: Close\n"
@@ -51,20 +59,31 @@ int main()
     connection_fd = accept(socket_fd, (struct sockaddr *)&client, &namelen);
     check(connection_fd >= 0, "Failed to accept on socket");
 
-    // Receive the message on the newly connected socket
-    char buf[1024];
-    ssize_t bytes = recv(connection_fd, buf, sizeof(buf), 0);
-    check(bytes >= 0, "Failed to receive data"); // TODO: Handle 0? Just check not -1?
+    // Send and receive messages until signal
+    while(true)
+    {
+        // Receive the message on the newly connected socket
+        char buf[BUF_SIZE];
+        ssize_t bytes = recv(connection_fd, buf, sizeof(buf), 0);
+        check(bytes > 0, "Failed to receive data");
 
-    // Print the received message 
-    printf("Received: '%s'\n", buf);
+        // Print the received message 
+        printf("Received: '%s'\n", buf);
 
-    // Write message
-    const char* response = make_response();
+        // Check if we should break the loop 
+        if (strcmp(STOP, buf) == 0)
+        {
+            printf("Stop signal received, closing connection...\n");
+            break;
+        }
 
-    // Send the message back to the client
-    ssize_t count = send(connection_fd, response, strlen(response), 0);
-    check(count >= 0, "Failed to send data");
+        // Write message back to client
+        const char *response = make_http_response();
+
+        // Send the message back to the client
+        ssize_t count = send(connection_fd, response, strlen(response), 0);
+        check(count >= 0, "Failed to send data");
+    }
 
     close(connection_fd);
     close(socket_fd);
