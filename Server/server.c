@@ -51,19 +51,26 @@ int main()
     int listen_rc = listen(socket_fd, 1);
     check(listen_rc == 0, "Failed to listen on socket");
 
-    // Client address information
+    // Prepare client
     struct sockaddr_in client;
-
-    // Accept a connection
     socklen_t namelen = (socklen_t)sizeof(client);
-    connection_fd = accept(socket_fd, (struct sockaddr *)&client, &namelen);
-    check(connection_fd >= 0, "Failed to accept on socket");
+
+    // Buffer to read send messages into
+    char buf[BUF_SIZE];
 
     // Send and receive messages until signal
     while(true)
     {
+        // Waiting for message
+        printf("Waiting for message...\n");
+
+        // Client address information
+        if(connection_fd) close(connection_fd);
+        connection_fd = accept(socket_fd, (struct sockaddr *)&client, &namelen);
+        check(connection_fd >= 0, "Failed to accept on socket");
+
         // Receive the message on the newly connected socket
-        char buf[BUF_SIZE];
+        bzero(buf, BUF_SIZE);
         ssize_t bytes = recv(connection_fd, buf, sizeof(buf), 0);
         check(bytes > 0, "Failed to receive data");
 
