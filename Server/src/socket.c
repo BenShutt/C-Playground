@@ -133,7 +133,6 @@ int socket_run(int port, size_t n_char, MessageHandler handler)
         check(buf != NULL, "Receive");
 
         char *response = (*handler)(buf);
-
         int rc = socket_send(connection_fd, response);
         check(rc == 0, "Send");
     }
