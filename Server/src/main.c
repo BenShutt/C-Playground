@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "server.h"
+#include "socket.h"
 
 #define PORT 666
 
 int main()
 {
-    return run_server(PORT);
+    return socket_run(PORT);
 }
