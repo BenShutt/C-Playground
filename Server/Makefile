@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra
 LDFLAGS = -Llib
 LDLIBS = -lm
 
-EXE = $(BIN_DIR)/server
+EXE = $(BIN_DIR)/main
 SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

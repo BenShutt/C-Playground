@@ -1,8 +1,8 @@
 #ifndef __check_h__
 #define __check_h__
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <errno.h>
 #include <string.h>
 
@@ -16,5 +16,7 @@
     log_error(M, ##__VA_ARGS__);\
     errno=0;\
     goto error;}
+
+#define check_memory(C) check((C) != NULL, "Memory error.")
 
 #endif
