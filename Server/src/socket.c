@@ -117,24 +117,24 @@ int socket_run(int port, size_t n_char, MessageHandler handler)
     int connection_fd = -1;
     char *buf = NULL;
 
-    check(handler != NULL, "Invalid argument");
+    check(handler != NULL, "Invalid argument.");
  
     socket_fd = socket_listen(port);
-    check(socket_fd != -1, "Listen");
+    check(socket_fd != -1, "Listen error.");
 
     while(true)
     {
         fd_close(connection_fd);
         connection_fd = socket_accept(socket_fd);
-        check(connection_fd != -1, "Accept");
+        check(connection_fd != -1, "Accept error.");
 
         if(buf) free(buf);
         buf = socket_recv(connection_fd, n_char);
-        check(buf != NULL, "Receive");
+        check(buf != NULL, "Receive error.");
 
         char *response = (*handler)(buf);
         int rc = socket_send(connection_fd, response);
-        check(rc == 0, "Send");
+        check(rc == 0, "Send error.");
     }
 
     socket_close(socket_fd, connection_fd, buf);
