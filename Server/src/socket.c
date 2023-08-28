@@ -83,9 +83,6 @@ char *socket_recv(int connection_fd, size_t n_char)
     size_t buf_size = n_char * sizeof(char);
     ssize_t bytes = recv(connection_fd, buf, buf_size, 0);
     check(bytes > 0, "Failed to receive data.");
-
-    // Print the received message 
-    printf("Received: '%s'\n", buf);
     return buf;
 
 error:
@@ -114,11 +111,13 @@ void socket_close(int socket_fd, int connection_fd, char *buf) // Private
     fd_close(socket_fd);
 }
 
-int socket_run(int port)
+int socket_run(int port, size_t n_char, MessageHandler handler)
 {
     int socket_fd = -1;
     int connection_fd = -1;
     char *buf = NULL;
+
+    check(handler != NULL, "Invalid argument");
  
     socket_fd = socket_listen(port);
     check(socket_fd != -1, "Listen");
@@ -126,15 +125,16 @@ int socket_run(int port)
     while(true)
     {
         fd_close(connection_fd);
-
         connection_fd = socket_accept(socket_fd);
         check(connection_fd != -1, "Accept");
 
         if(buf) free(buf);
-        buf = socket_recv(connection_fd, 1024);
+        buf = socket_recv(connection_fd, n_char);
         check(buf != NULL, "Receive");
 
-        int rc = socket_send(connection_fd, "Success");
+        char *response = (*handler)(buf);
+
+        int rc = socket_send(connection_fd, response);
         check(rc == 0, "Send");
     }
 
