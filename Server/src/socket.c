@@ -100,7 +100,7 @@ int socket_send(int connection_fd, const char *message)
 
     // Send message to client
     ssize_t count = send(connection_fd, message, strlen(message), 0);
-    check(count >= 0, "Failed to send data");
+    check(count >= 0, "Failed to send data.");
     return 0;
 
 error:
