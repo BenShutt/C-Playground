@@ -4,7 +4,7 @@
 # Script: run.sh
 # Usage: ./run.sh
 #
-# Clean, make, and run the program
+# Clean, make, and run the executable
 #
 
 # Set defaults
@@ -14,7 +14,7 @@ set -o nounset -o errexit -o errtrace -o pipefail
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Path to the executable
-EXE="${SCRIPT_DIR}/server"
+EXE="${SCRIPT_DIR}/../bin/main"
 
-# Run
+# Clean, make, and run the executable
 make clean && make && ${EXE} && make clean

@@ -27,7 +27,7 @@ const char *make_http_response()
         "Success!\n";
 }
 
-int main()
+int run()
 {
     // File descriptors that may need to be closed regardless of success
     int socket_fd = -1;
