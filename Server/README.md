@@ -1,6 +1,6 @@
 # Server
 
-A very basic TCP web-server written in C.
+A simple TCP web-server written in C.
 
 ## Usage
 
