@@ -1,3 +1,5 @@
+#include <cjson/cJSON.h>
+
 #include "request.h"
 #include "check.h"
 

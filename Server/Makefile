@@ -2,8 +2,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
 
-CC = gcc
-CPPFLAGS = -Isrc -MMD -MP
+CC = clang
+CPPFLAGS = -std=gnu99 -Isrc -Iinclude -MMD -MP
 CFLAGS = -Wall -Wextra
 LDFLAGS = -Llib
 LDLIBS = -lm
