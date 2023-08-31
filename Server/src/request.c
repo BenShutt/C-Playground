@@ -6,6 +6,7 @@
 
 FileRequest *FileRequest_init(const char *message)
 {
+    FileRequest *request = NULL;
     cJSON *json = NULL;
     check(message != NULL, "Invalid argument");
 
@@ -22,18 +23,15 @@ FileRequest *FileRequest_init(const char *message)
     check(size_rc, "Invalid or missing 'size' key.");
     size_t size = (size_t)file_name_json->valueint;
 
-    FileRequest *request = malloc(sizeof(FileRequest));
+    request = malloc(sizeof(FileRequest));
     check_memory(request);
 
     request->file_name = file_name;
     request->size = size;
 
+error: // Fallthrough
     if(json) cJSON_Delete(json);
     return request;
-
-error:
-    if(json) cJSON_Delete(json);
-    return NULL;
 }
 
 void FileRequest_deinit(FileRequest *request)
