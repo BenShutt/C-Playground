@@ -4,6 +4,16 @@
 #include "request.h"
 #include "check.h"
 
+void handle_request(const char *message)
+{
+    FileRequest *request = FileRequest_init(message);
+    check(request != NULL, "Invalid request.");
+    FileRequest_print(request);
+
+error: // Fallthrough
+    if(request) FileRequest_deinit(request);
+}
+
 FileRequest *FileRequest_init(const char *message)
 {
     FileRequest *request = NULL;
@@ -43,5 +53,18 @@ void FileRequest_deinit(FileRequest *request)
             free(request->file_name); // TODO: needed?
         }
         free(request);
+    }
+}
+
+void FileRequest_print(FileRequest *request)
+{
+    if(request != NULL)
+    {
+        printf("FileRequest: file_name: %s, size: %ld\n", 
+            request->file_name, request->size);
+    }
+    else
+    {
+       printf("FileRequest: NULL"); 
     }
 }
