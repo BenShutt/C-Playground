@@ -2,14 +2,18 @@
 #define __request_h__
 
 #include <stdlib.h>
+#include <stdint.h>
 
-typedef struct FileRequest {
+#include "request_parts.h"
+
+typedef struct Request {
     char *file_name;
     size_t size;
-} FileRequest;
+    char *data; // TODO: uint8_t
+} Request;
 
-FileRequest *FileRequest_init(const char *json);
-void FileRequest_deinit(FileRequest *request);
-void FileRequest_print(FileRequest *request);
+Request *Request_init(RequestParts *request_parts);
+void Request_deinit(Request *request);
+void Request_print(Request *request);
 
 #endif

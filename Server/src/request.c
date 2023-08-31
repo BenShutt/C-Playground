@@ -1,4 +1,5 @@
 #include <cjson/cJSON.h>
+#include <string.h>
 
 #include "request.h"
 #include "check.h"
@@ -7,17 +8,14 @@
 // Number of characters supported by file_name (including NUL-terminator)
 #define FILE_NAME_COUNT 100
 
-FileRequest *FileRequest_init(const char *message)
+Request *Request_init(RequestParts *request_parts)
 {
     // Pointers to free on error
     cJSON *json = NULL;
     char *file_name = NULL;
-    
-    // Check the argument is valid
-    check(message != NULL, "Invalid argument.");
 
     // Parse the argument into JSON
-    json = cJSON_Parse(message);
+    json = cJSON_Parse(request_parts->json);
     check(json != NULL, "Invalid JSON.");
 
     // Extract file_name string from JSON
@@ -29,10 +27,11 @@ FileRequest *FileRequest_init(const char *message)
     check(size >= 0, "Failed to parse 'size' JSON key.");
 
     // Make request to return 
-    FileRequest *request = malloc(sizeof(FileRequest));
+    Request *request = malloc(sizeof(Request));
     check_memory(request);
     request->file_name = file_name;
     request->size = size;
+    request->data = request_parts->data;
 
     // Free JSON and return with success
     cJSON_Delete(json);
@@ -44,7 +43,7 @@ error:
     return NULL;
 }
 
-void FileRequest_deinit(FileRequest *request)
+void Request_deinit(Request *request)
 {
     if(request)
     {
@@ -55,15 +54,15 @@ void FileRequest_deinit(FileRequest *request)
     }
 }
 
-void FileRequest_print(FileRequest *request)
+void Request_print(Request *request)
 {
     if(request)
     {
-        printf("FileRequest: file_name: %s, size: %ld\n", 
+        printf("Request: file_name: %s, size: %ld\n", 
             request->file_name, request->size);
     }
     else
     {
-       printf("FileRequest: NULL"); 
+       printf("Request: NULL"); 
     }
 }

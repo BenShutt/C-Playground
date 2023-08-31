@@ -11,7 +11,7 @@ char *read_string(cJSON *json, const char *key, size_t n_char)
 
     char *string = calloc(n_char, sizeof(char));
     check_memory(string);
-    strlcpy(string, child_json->valuestring, n_char);
+    strlcpy(string, child_json->valuestring, n_char); // TODO: strdup
     return string;
 
 error:

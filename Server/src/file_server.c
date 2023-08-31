@@ -1,25 +1,35 @@
 #include "file_server.h"
+#include "check.h"
+#include "request_parts.h"
 #include "request.h"
 
-void write_request(FileRequest *request) // Private 
+int write_request(Request *request) // Private 
 {
-    FileRequest_print(request);
+    Request_print(request);
+    return 0;
 }
 
 char *file_server_handle(const char *message)
 {
-    static FileRequest *last_request = NULL;
+    RequestParts *request_parts = NULL;
+    Request *request = NULL;
+    check(message != NULL, "Invalid argument.");
+    
+    request_parts = RequestParts_init(message);
+    check(request_parts != NULL, "Failed to initialize RequestParts.");
 
-    if(last_request)
-    {
-        write_request(last_request);
-        FileRequest_deinit(last_request);
-        last_request = NULL;
-        return "Written";
-    }
-    else
-    {
-        last_request = FileRequest_init(message);
-        return last_request != NULL ? "Parsed" : "Invalid";      
-    }
+    request = Request_init(request_parts);
+    check(request != NULL, "Failed to initialize Request.");
+
+    int rc = write_request(request);
+    check(rc == 0, "Failed to write file.");
+    
+    Request_deinit(request);
+    RequestParts_deinit(request_parts);
+    return "Success";
+
+error:
+    if(request) Request_deinit(request);
+    if(request_parts) RequestParts_deinit(request_parts);
+    return "Error";
 }

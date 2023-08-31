@@ -3,7 +3,7 @@
 #include "file.h"
 #include "check.h"
 
-int write_file(unsigned char bytes[], size_t size, const char *url)
+int write_file(uint8_t bytes[], size_t size, const char *url)
 {
     FILE *file = NULL;
     check(url != NULL, "Invalid argument.");
