@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-typedef char*(*MessageHandler)(char *message);
+typedef char*(*MessageHandler)(const char *message);
 
 int socket_listen(int port);
 int socket_accept(int socket_fd);

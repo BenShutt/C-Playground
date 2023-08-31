@@ -8,8 +8,6 @@ typedef struct FileRequest {
     size_t size;
 } FileRequest;
 
-void handle_request(const char *message);
-
 FileRequest *FileRequest_init(const char *json);
 void FileRequest_deinit(FileRequest *request);
 void FileRequest_print(FileRequest *request);

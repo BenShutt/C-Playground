@@ -1,5 +1,3 @@
-#include <stdbool.h>
-#include <string.h>
 #include <cjson/cJSON.h>
 
 #include "request.h"
@@ -8,16 +6,6 @@
 
 // Number of characters supported by file_name (including NUL-terminator)
 #define FILE_NAME_COUNT 100
-
-void handle_request(const char *message)
-{
-    FileRequest *request = FileRequest_init(message);
-    check(request != NULL, "Invalid request.");
-    FileRequest_print(request);
-
-error: // Fallthrough
-    if(request) FileRequest_deinit(request);
-}
 
 FileRequest *FileRequest_init(const char *message)
 {
