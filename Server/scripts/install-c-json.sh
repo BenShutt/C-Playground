@@ -4,8 +4,7 @@
 # Script: install-c-json.sh
 # Usage: ./install-c-json.sh
 #
-# Downloads and installs the cJSON library into the project lib 
-# directory using cmake.
+# Downloads and installs the cJSON library into the project lib directory.
 #
 
 # ============================== Variables ==============================

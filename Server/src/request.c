@@ -8,7 +8,7 @@ FileRequest *FileRequest_init(const char *message)
 {
     FileRequest *request = NULL;
     cJSON *json = NULL;
-    check(message != NULL, "Invalid argument");
+    check(message != NULL, "Invalid argument.");
 
     json = cJSON_Parse(message);
     check(json != NULL, "Invalid JSON.");
