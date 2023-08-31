@@ -116,3 +116,5 @@ tags
 .vscode
 Server/include
 Server/lib
+Server/bin
+Server/obj
