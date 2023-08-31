@@ -7,7 +7,7 @@
 #include "check.h"
 #include "file.h"
 
-#define URL_PREFIX "/Users/benshutt/Desktop"
+#define URL_PREFIX NULL
 
 int write_request(Request *request) // Private 
 {
