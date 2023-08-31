@@ -42,7 +42,7 @@ void FileRequest_deinit(FileRequest *request)
     {
         if(request->file_name)
         {
-            free(request->file_name);
+            free(request->file_name); // TODO: needed?
         }
         free(request);
     }
