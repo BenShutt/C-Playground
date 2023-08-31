@@ -20,7 +20,7 @@ REPOSITORY_NAME="cJSON"
 CLONE_URL="https://github.com/DaveGamble/${REPOSITORY_NAME}.git"
 
 # Local directory where files are written to temporarily
-REPOSITORY_DIR="/tmp/${REPOSITORY_NAME}"
+TMP_REPOSITORY_DIR="/tmp/${REPOSITORY_NAME}"
 
 # Local directory of the project
 PROJECT_DIR="${SCRIPT_DIR}/.."
@@ -29,7 +29,7 @@ PROJECT_DIR="${SCRIPT_DIR}/.."
 
 # Clean up temporary files
 function cleanup {
-    rm -rf "${REPOSITORY_DIR}"
+    rm -rf "${TMP_REPOSITORY_DIR}"
 }
 
 # ============================== Main ==============================
@@ -41,7 +41,7 @@ trap cleanup EXIT
 cleanup
 
 # Clone the repository from the remote to the local directory
-git clone -b master "${CLONE_URL}" "${REPOSITORY_DIR}" && cd "${REPOSITORY_DIR}"
+git clone -b master "${CLONE_URL}" "${TMP_REPOSITORY_DIR}" && cd "${TMP_REPOSITORY_DIR}"
 
 # Make a build directory for cmake to write to and make the library
 mkdir -p build && cd build
@@ -51,3 +51,6 @@ cmake .. \
     -DENABLE_CJSON_TEST=Off \
     -DCMAKE_INSTALL_PREFIX="${PROJECT_DIR}"
 make install
+
+# Remove .dylib files in preference of .a
+find "${PROJECT_DIR}/lib" -name "*.dylib" -delete

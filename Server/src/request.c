@@ -3,18 +3,24 @@
 #include "request.h"
 #include "check.h"
 
-FileRequest *FileRequest_init(char *json)
+FileRequest *FileRequest_init(const char *message)
 {
-    check(json != NULL, "Invalid argument");
+    cJSON *json = NULL;
+    check(message != NULL, "Invalid argument");
+
+    json = cJSON_Parse(message);
 
     FileRequest *request = malloc(sizeof(FileRequest));
     check_memory(request);
 
     request->file_name = NULL;
     request->size = 0;
+
+    if(json) cJSON_Delete(json);
     return request;
 
 error:
+    if(json) cJSON_Delete(json);
     return NULL;
 }
 
