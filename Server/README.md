@@ -4,12 +4,22 @@ A simple TCP web-server written in C.
 
 ## Usage
 
-To run the program:
+To run the program, install dependencies (only needs to be done once) and run:
 
 ```bash
 ./scripts/install-c-json.sh
 ./scripts/run.sh
 ```
+
+## IP Address
+
+To get the wireless IP:
+
+```bash
+ipconfig getifaddr en0
+```
+
+Then the server will connect to port `666`.
 
 ## Dependencies
 
