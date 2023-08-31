@@ -76,16 +76,13 @@ char *socket_recv(int connection_fd, size_t n_char)
     check(connection_fd != -1, "Invalid argument.");
 
     // Buffer to read send messages into
-    buf = calloc(n_char, sizeof(char));
+    buf = calloc(n_char + 1, sizeof(char));
     check_memory(buf);
 
     // Receive the message on the newly connected socket
     size_t buf_size = n_char * sizeof(char);
     ssize_t bytes = recv(connection_fd, buf, buf_size, 0);
     check(bytes > 0, "Failed to receive data.");
-
-    // Ensure last character is the string terminator
-    buf[n_char - 1] = '\0';
     return buf;
 
 error:

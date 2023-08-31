@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+
 #include "socket.h"
+#include "request.h"
 
 #define PORT 666
 
@@ -9,8 +11,9 @@ char *handle(char *message)
 {
     static int num = 0;
     num += 1;
+    printf("Handling message %d.\n", num);
 
-    printf("Received message %d) '%s'\n", num, message);
+    handle_request(message);
     return "Success";
 }
 

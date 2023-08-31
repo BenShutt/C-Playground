@@ -1,8 +1,13 @@
-#include <cjson/cJSON.h>
 #include <stdbool.h>
+#include <string.h>
+#include <cjson/cJSON.h>
 
 #include "request.h"
 #include "check.h"
+#include "json_util.h"
+
+// Number of characters supported by file_name (including NUL-terminator)
+#define FILE_NAME_COUNT 100
 
 void handle_request(const char *message)
 {
@@ -16,32 +21,39 @@ error: // Fallthrough
 
 FileRequest *FileRequest_init(const char *message)
 {
-    FileRequest *request = NULL;
+    // Pointers to free on error
+    char *file_name = NULL;
     cJSON *json = NULL;
+    
+    // Check the argument is valid
     check(message != NULL, "Invalid argument.");
 
+    // Parse the argument into JSON
     json = cJSON_Parse(message);
     check(json != NULL, "Invalid JSON.");
 
-    cJSON *file_name_json = cJSON_GetObjectItemCaseSensitive(json, "file_name");
-    bool file_name_rc = cJSON_IsString(file_name_json) && file_name_json->valuestring != NULL;
-    check(file_name_rc, "Invalid or missing 'file_name' key.");
-    char *file_name = file_name_json->valuestring; // TODO zero terminator?
+    // Extract file_name string from JSON
+    file_name = read_string(json, "file_name", FILE_NAME_COUNT);
+    check(file_name != NULL, "Failed to parse 'file_name' JSON key.");
+    
+    // Extract size int from JSON
+    size_t size = read_size(json, "size");
+    check(size >= 0, "Failed to parse 'size' JSON key.");
 
-    cJSON *size_json = cJSON_GetObjectItemCaseSensitive(json, "size");
-    bool size_rc = cJSON_IsNumber(size_json) && size_json->valueint > 0;
-    check(size_rc, "Invalid or missing 'size' key.");
-    size_t size = (size_t)file_name_json->valueint;
-
-    request = malloc(sizeof(FileRequest));
+    // Make request to return 
+    FileRequest *request = malloc(sizeof(FileRequest));
     check_memory(request);
-
     request->file_name = file_name;
     request->size = size;
 
-error: // Fallthrough
-    if(json) cJSON_Delete(json);
+    // Free JSON and return with success
+    cJSON_Delete(json);
     return request;
+
+error:
+    if(file_name) free(file_name);
+    if(json) cJSON_Delete(json);
+    return NULL;
 }
 
 void FileRequest_deinit(FileRequest *request)
@@ -49,16 +61,15 @@ void FileRequest_deinit(FileRequest *request)
     if(request)
     {
         if(request->file_name)
-        {
-            free(request->file_name); // TODO: needed?
-        }
+            free(request->file_name);
+
         free(request);
     }
 }
 
 void FileRequest_print(FileRequest *request)
 {
-    if(request != NULL)
+    if(request)
     {
         printf("FileRequest: file_name: %s, size: %ld\n", 
             request->file_name, request->size);
