@@ -22,8 +22,8 @@ error: // Fallthrough
 FileRequest *FileRequest_init(const char *message)
 {
     // Pointers to free on error
-    char *file_name = NULL;
     cJSON *json = NULL;
+    char *file_name = NULL;
     
     // Check the argument is valid
     check(message != NULL, "Invalid argument.");
