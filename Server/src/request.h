@@ -2,7 +2,6 @@
 #define __request_h__
 
 #include <stdlib.h>
-#include <stdint.h>
 
 #include "request_parts.h"
 

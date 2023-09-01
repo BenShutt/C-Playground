@@ -3,9 +3,6 @@
 #include "request_parts.h"
 #include "check.h"
 
-// String that separates request body content
-#define SEPARATOR "\n"
-
 RequestParts *RequestParts_init(const char *message)
 {
     char *json = NULL;
@@ -15,7 +12,7 @@ RequestParts *RequestParts_init(const char *message)
     char *token = (char *)message;
 
     // Get JSON from first part of the message 
-    json = strdup(strsep(&token, SEPARATOR));
+    json = strdup(strsep(&token, "\n"));
     check(json != NULL, "Failed to split JSON component");
 
     // Get file data from second part of the message

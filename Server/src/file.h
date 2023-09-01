@@ -2,8 +2,7 @@
 #define __file_h__
 
 #include <stdlib.h>
-#include <stdint.h>
 
-int write_file(uint8_t bytes[], size_t size, const char *url);
+int write_file(const void *data, size_t size, const char *url);
 
 #endif

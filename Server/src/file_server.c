@@ -7,7 +7,7 @@
 #include "check.h"
 #include "file.h"
 
-#define URL_PREFIX NULL
+#define URL_PREFIX "/Users/benshutt/Desktop"
 
 int write_request(Request *request) // Private 
 {
@@ -17,7 +17,7 @@ int write_request(Request *request) // Private
     int rc = sprintf(url, "%s/%s", URL_PREFIX, request->file_name);
     check(rc > 0, "Failed to build URL.");
 
-    return write_file((uint8_t *)request->data, request->size, url); // TODO
+    return write_file(request->data, request->size, url);
 
 error:
     return -1;
