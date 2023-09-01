@@ -3,27 +3,24 @@
 #include "request_parts.h"
 #include <string.h>
 
-#include "request.h"
 #include "check.h"
+#include "request.h"
 #include "file.h"
 
 #define URL_PREFIX "/Users/benshutt/Desktop"
 
-int write_request(Request *request) // Private 
-{
-    check(URL_PREFIX != NULL, "URL prefix.");
-    
+int write_request(Arguments *arguments, Request *request) // Private 
+{    
     char url[100];
-    int rc = sprintf(url, "%s/%s", URL_PREFIX, request->file_name);
+    int rc = sprintf(url, "%s/%s", arguments->dir, request->file_name);
     check(rc > 0, "Failed to build URL.");
-
     return write_file(request->data, request->size, url);
 
 error:
     return -1;
 }
 
-char *file_server_handle(const char *message)
+char *file_server_handle(Arguments *arguments, const char *message)
 {
     RequestParts *request_parts = NULL;
     Request *request = NULL;
@@ -36,7 +33,7 @@ char *file_server_handle(const char *message)
     check(request != NULL, "Failed to initialize Request."); 
     Request_print(request);
 
-    int rc = write_request(request);
+    int rc = write_request(arguments, request);
     check(rc == 0, "Failed to write file.");
     
     Request_deinit(request);

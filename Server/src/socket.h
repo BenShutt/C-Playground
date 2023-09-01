@@ -2,13 +2,14 @@
 #define __socket_h__
 
 #include <stdlib.h>
+#include "arguments.h"
 
-typedef char*(*MessageHandler)(const char *message);
+typedef char*(*MessageHandler)(Arguments *arguments, const char *message);
 
 int socket_listen(int port);
 int socket_accept(int socket_fd);
 char *socket_recv(int connection_fd, size_t n_char);
 int socket_send(int connection_fd, const char *message);
-int socket_run(int port, size_t n_char, MessageHandler handler);
+int socket_run(Arguments *arguments, MessageHandler handler);
 
 #endif

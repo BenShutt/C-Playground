@@ -110,15 +110,16 @@ void socket_close(int socket_fd, int connection_fd, char *buf) // Private
     fd_close(socket_fd);
 }
 
-int socket_run(int port, size_t n_char, MessageHandler handler)
+int socket_run(Arguments *arguments, MessageHandler handler)
 {
     int socket_fd = -1;
     int connection_fd = -1;
     char *buf = NULL;
 
+    check(arguments != NULL, "Invalid argument.");
     check(handler != NULL, "Invalid argument.");
  
-    socket_fd = socket_listen(port);
+    socket_fd = socket_listen(arguments->port);
     check(socket_fd != -1, "Listen error.");
 
     while(true)
@@ -128,10 +129,10 @@ int socket_run(int port, size_t n_char, MessageHandler handler)
         check(connection_fd != -1, "Accept error.");
 
         if(buf) free(buf);
-        buf = socket_recv(connection_fd, n_char);
+        buf = socket_recv(connection_fd, arguments->n_char);
         check(buf != NULL, "Receive error.");
 
-        char *response = (*handler)(buf);
+        char *response = (*handler)(arguments, buf);
         int rc = socket_send(connection_fd, response);
         check(rc == 0, "Send error.");
     }
