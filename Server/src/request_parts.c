@@ -13,11 +13,11 @@ RequestParts *RequestParts_init(const char *message)
 
     // Get JSON from first part of the message 
     json = strdup(strsep(&token, "\n"));
-    check(json != NULL, "Failed to split JSON component");
+    check(json != NULL, "Failed to split JSON component.");
 
     // Get file data from second part of the message
     data = strdup(token);
-    check(data != NULL, "Failed to split data component");
+    check(data != NULL, "Failed to split data component.");
 
     // Make request to return 
     RequestParts *requestParts = malloc(sizeof(RequestParts));

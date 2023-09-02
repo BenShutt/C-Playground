@@ -62,11 +62,11 @@ void Request_print(Request *request)
 {
     if(request)
     {
-        printf("Request: file_name: %s, size: %ld\n", 
+        printf("Request: file_name: %s, size: %ld.\n", 
             request->file_name, request->size);
     }
     else
     {
-       printf("Request: NULL"); 
+       printf("Request: NULL."); 
     }
 }
