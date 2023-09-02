@@ -75,7 +75,7 @@ char *socket_recv(int connection_fd, size_t n_char)
     check(connection_fd != -1, "Invalid argument.");
 
     // Buffer to read send messages into
-    buf = calloc(n_char + 1, sizeof(char));
+    buf = calloc(n_char, sizeof(char));
     check_memory(buf);
 
     // Receive the message on the newly connected socket

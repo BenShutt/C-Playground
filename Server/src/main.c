@@ -7,7 +7,6 @@
 int main(int argc, char *argv[])
 {
     int rc = -1;
-
     Arguments *arguments = Arguments_init(argc, argv);
     if(arguments)
     {

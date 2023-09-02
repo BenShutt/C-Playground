@@ -25,6 +25,10 @@ Request *Request_init(RequestParts *request_parts)
     // Extract size int from JSON
     size_t size = read_size(json, "size");
     check(size >= 0, "Failed to parse 'size' JSON key.");
+    
+    // Only take the relevant first n bytes
+    int rc = RequestParts_trim_data(request_parts, size);
+    check(rc == 0, "Failed to trim data.");
 
     // Make request to return 
     Request *request = malloc(sizeof(Request));

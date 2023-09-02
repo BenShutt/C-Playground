@@ -20,7 +20,7 @@ EXE="${SCRIPT_DIR}/../bin/main"
 PORT="666"
 
 # Number of characters for socket
-N_CHAR="10000"
+N_CHAR="1048576" # 1MB
 
 # Directory to write files into
 DIR="${HOME}/Desktop"

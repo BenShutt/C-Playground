@@ -1,17 +1,15 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "file_server.h"
 #include "check.h"
 #include "request_parts.h"
-#include <string.h>
-
-#include "check.h"
 #include "request.h"
 #include "file.h"
 
-#define URL_PREFIX "/Users/benshutt/Desktop"
-
 int write_request(Arguments *arguments, Request *request) // Private 
 {    
-    char url[100];
+    char url[100]; // TODO: Ought to error if this will not be enough
     int rc = sprintf(url, "%s/%s", arguments->dir, request->file_name);
     check(rc > 0, "Failed to build URL.");
     return write_file(request->data, request->size, url);

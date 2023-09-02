@@ -46,3 +46,16 @@ void RequestParts_deinit(RequestParts *request_parts)
         free(request_parts);
     }
 }
+
+int RequestParts_trim_data(RequestParts *request_parts, size_t size)
+{
+    char *old_data = request_parts->data;
+    char *new_data = strndup(old_data, size);
+    check_memory(new_data);
+    free(old_data);
+    request_parts->data = new_data;
+    return 0;
+
+error:
+    return -1;
+}
