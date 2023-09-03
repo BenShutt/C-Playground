@@ -12,6 +12,9 @@ int write_request(Arguments *arguments, Request *request) // Private
     char url[100] = { 0 }; // TODO: Ought to error if this will not be enough
     int rc = sprintf(url, "%s/%s", arguments->dir, request->file_name);
     check(rc > 0, "Failed to build URL.");
+
+    // TODO: Bytes don't match xxd path/to/file
+    print_hex((uint8_t *)request->data, 24);
     return write_file((uint8_t *)request->data, request->size, url);
 
 error:
