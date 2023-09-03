@@ -6,6 +6,8 @@
 #include "socket.h"
 #include "check.h"
 
+#include "file.h"
+
 int fd_close(int fd) // Private
 {
     if(fd != -1) 

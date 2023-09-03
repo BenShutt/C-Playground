@@ -9,10 +9,10 @@
 
 int write_request(Arguments *arguments, Request *request) // Private 
 {    
-    char url[100]; // TODO: Ought to error if this will not be enough
+    char url[100] = { 0 }; // TODO: Ought to error if this will not be enough
     int rc = sprintf(url, "%s/%s", arguments->dir, request->file_name);
     check(rc > 0, "Failed to build URL.");
-    return write_file(request->data, request->size, url);
+    return write_file((uint8_t *)request->data, request->size, url);
 
 error:
     return -1;

@@ -4,6 +4,8 @@
 #include "socket.h"
 #include "file_server.h"
 
+#include "file.h"
+
 int main(int argc, char *argv[])
 {
     int rc = -1;

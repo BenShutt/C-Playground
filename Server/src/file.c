@@ -3,7 +3,7 @@
 #include "file.h"
 #include "check.h"
 
-int write_file(const void *data, size_t size, const char *url)
+int write_file(const uint8_t *data, size_t n_char, const char *url)
 {
     FILE *file = NULL;
     check(data != NULL, "Invalid bytes argument.");
@@ -12,8 +12,8 @@ int write_file(const void *data, size_t size, const char *url)
     file = fopen(url, "wb");
     check(file != NULL, "Failed to open file '%s'.", url);
 
-    size_t rc = fwrite(data, size, 1, file);
-    check(rc >= 1, "Failed to write to file '%s'.", url);
+    fwrite(data, sizeof(uint8_t), n_char, file);
+    check(ferror(file) == 0, "Failed to write file '%s'.", url);
 
     fclose(file);
     return 0;
@@ -21,4 +21,41 @@ int write_file(const void *data, size_t size, const char *url)
 error:
     if(file) fclose(file);
     return -1;
+}
+
+uint8_t *read_file(size_t n_char, const char *url)
+{
+    FILE *file = NULL;
+    uint8_t *buf = NULL;
+    check(url != NULL, "Invalid url argument.");
+
+    file = fopen(url, "rb");
+    check(file != NULL, "Failed to open file '%s'.", url);
+    
+    int rc = fseek(file, 0, SEEK_SET);
+    check(rc == 0, "Failed to seek file '%s'.", url);
+
+    buf = malloc(sizeof(uint8_t) * n_char);
+    check_memory(buf);
+
+    fread(buf, sizeof(uint8_t), n_char, file);
+    check(ferror(file) == 0, "Failed to read file '%s'.", url);
+
+    fclose(file);
+    return buf;
+
+error:
+    if(buf) free(buf);
+    if(file) fclose(file);
+    return NULL;
+}
+
+void print_hex(uint8_t *buf, size_t n)
+{
+    if(n <= 0) return;
+
+    for(size_t i = 0; i < n; i++)
+        printf("%02x", buf[i]);
+    
+    printf("\n");
 }
