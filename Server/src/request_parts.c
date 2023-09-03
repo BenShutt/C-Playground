@@ -3,6 +3,9 @@
 #include "request_parts.h"
 #include "check.h"
 
+// TODO: Investigate if char* seps are working as expected
+// Could be UTF8 vs ASCII
+
 RequestParts *RequestParts_init(const char *message)
 {
     char *json = NULL;
