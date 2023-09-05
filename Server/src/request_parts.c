@@ -4,7 +4,7 @@
 #include "check.h"
 
 // TODO: Investigate if char* seps are working as expected
-// Could be UTF8 vs ASCII
+// Could be UTF8 vs ASCII, use Base64
 
 RequestParts *RequestParts_init(const char *message)
 {
