@@ -7,6 +7,9 @@
 # Downloads and installs the cJSON library into the project lib directory.
 #
 
+# Set defaults
+set -o nounset -o errexit -o errtrace -o pipefail
+
 # ============================== Variables ==============================
 
 # The directory of this script

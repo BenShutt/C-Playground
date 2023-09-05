@@ -10,6 +10,8 @@
 # Set defaults
 set -o nounset -o errexit -o errtrace -o pipefail
 
+# ============================== Variables ==============================
+
 # The directory of this script
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -24,6 +26,8 @@ N_CHAR="1048576" # 1MB
 
 # Directory to write files into
 DIR="${HOME}/Desktop"
+
+# ============================== Main ==============================
 
 # Clean, make, and run the executable
 make clean && make && ${EXE} ${PORT} ${N_CHAR} ${DIR} && make clean
