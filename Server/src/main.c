@@ -2,9 +2,8 @@
 
 #include "arguments.h"
 #include "socket.h"
-#include "file_server.h"
-
 #include "file.h"
+#include "file_server.h"
 
 int main(int argc, char *argv[])
 {
