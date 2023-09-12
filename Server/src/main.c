@@ -1,19 +1,40 @@
 #include <stdlib.h>
+#include <stdbool.h>
+#include <mongoose.h>
 
-#include "arguments.h"
-#include "socket.h"
-#include "file.h"
-#include "file_server.h"
-
-int main(int argc, char *argv[])
+static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
 {
-    int rc = -1;
-    Arguments *arguments = Arguments_init(argc, argv);
-    if(arguments)
+    if(ev != MG_EV_HTTP_MSG) return;
+
+    struct mg_http_message *hm = (struct mg_http_message *)ev_data;
+    if(!mg_http_match_uri(hm, "/api/hello")) // On /api/hello requests,
     {
-        rc = socket_run(arguments, file_server_handle);
-        Arguments_deinit(arguments);
+        // Serve files from root_d for all other URIs
+        struct mg_http_serve_opts opts = {.root_dir = "."}; 
+        mg_http_serve_dir(c, hm, &opts);
+        return;
     }
 
-    return rc == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    // Send dynamic JSON response
+    mg_http_reply(
+        c, 
+        200, 
+        "", 
+        "{%m:%d}\n",
+        MG_ESC("status"), 
+        1
+    );
+}
+
+int main()
+{
+    struct mg_mgr mgr;
+    mg_mgr_init(&mgr);
+    mg_http_listen(&mgr, "http://0.0.0.0:8000", fn, NULL);
+    while(true)
+    {
+        mg_mgr_poll(&mgr, 1000); // Infinite event loop
+    }
+
+    return EXIT_SUCCESS;
 }

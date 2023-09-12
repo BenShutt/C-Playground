@@ -6,7 +6,7 @@ CC = clang
 CPPFLAGS = -std=gnu99 -Isrc -Iinclude -MMD -MP
 CFLAGS = -Wall -Wextra
 LDFLAGS = -Llib
-LDLIBS = -lm -lcjson
+LDLIBS = -lm -lcjson -lmongoose
 
 EXE = $(BIN_DIR)/main
 SRC = $(wildcard $(SRC_DIR)/*.c)
