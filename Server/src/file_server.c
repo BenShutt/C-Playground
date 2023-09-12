@@ -14,7 +14,7 @@ int write_request(Arguments *arguments, Request *request) // Private
     // Check that we can build a valid URL
     int dir_len = strnlen(arguments->dir, URL_SIZE);
     int file_name_len = strnlen(request->file_name, URL_SIZE);
-    int len = dir_len + file_name_len + sizeof('/') + sizeof('\0');
+    int len = dir_len + file_name_len + sizeof('/');
     check(len < URL_SIZE, "Invalid URL length.");
 
     // Compose URL from request
