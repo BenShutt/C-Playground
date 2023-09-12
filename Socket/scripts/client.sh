@@ -11,7 +11,7 @@
 set -o nounset -o errexit -o errtrace -o pipefail
 
 # Port for socket
-PORT=666
+PORT="666"
 
 # Execute request
 curl \
