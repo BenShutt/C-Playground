@@ -114,7 +114,14 @@ tags
 # Project
 
 .vscode
+
+Socket/include
+Socket/lib
+Socket/bin
+Socket/obj
+
 Server/include
 Server/lib
 Server/bin
 Server/obj
+
