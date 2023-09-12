@@ -7,9 +7,18 @@
 #include "request.h"
 #include "file.h"
 
+#define URL_SIZE 100
+
 int write_request(Arguments *arguments, Request *request) // Private 
 {    
-    char url[100] = { 0 }; // TODO: Ought to error if this will not be enough
+    // Check that we can build a valid URL
+    int dir_len = strnlen(arguments->dir, URL_SIZE);
+    int file_name_len = strnlen(arguments->dir, URL_SIZE);
+    int len = dir_len + file_name_len + sizeof('/') + sizeof('\0');
+    check(len < URL_SIZE, "Invalid URL length.");
+
+    // Compose URL from request
+    char url[URL_SIZE] = { 0 };
     int rc = sprintf(url, "%s/%s", arguments->dir, request->file_name);
     check(rc > 0, "Failed to build URL.");
 

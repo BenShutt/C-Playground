@@ -82,8 +82,9 @@ char *socket_recv(int connection_fd, size_t n_char)
 
     // Receive the message on the newly connected socket
     size_t buf_size = n_char * sizeof(char);
-    ssize_t bytes = recv(connection_fd, buf, buf_size, 0);
-    check(bytes > 0, "Failed to receive data.");
+    ssize_t bytes_read = recv(connection_fd, buf, buf_size, 0);
+    printf("[CHECK] Bytes received %ld\n", bytes_read);
+    check(bytes_read > 0, "Failed to receive data.");
     return buf;
 
 error:
