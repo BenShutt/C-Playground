@@ -36,6 +36,12 @@ function cleanup {
 
 # ============================== Main ==============================
 
+# Check cmake is installed
+if ! [ -x "$(command -v cmake)" ]; then
+    echo "Error: Please ensure cmake is installed." >&2
+    exit 1
+fi
+
 # Clean up on exit
 trap cleanup EXIT
 
