@@ -115,6 +115,13 @@ error:
     return -1;
 }
 
+void print_message(char *message) // Private
+{
+    printf("========== Start ==========\n");
+    printf("%s\n", message);
+    printf("========== End ==========\n");
+}
+
 void socket_close(int socket_fd, int connection_fd, char *buf) // Private
 {
     if(buf) free(buf);
@@ -142,7 +149,8 @@ int socket_run(Arguments *arguments)
         if(buf) free(buf);
         buf = socket_recv(connection_fd, arguments->n_char);
         check(buf != NULL, "Receive error.");
-        printf("Received: '%s'\n", buf);
+
+        print_message(buf);
 
         int rc = socket_send(connection_fd, make_http_response());
         check(rc == 0, "Send error.");
@@ -155,4 +163,3 @@ error:
     socket_close(socket_fd, connection_fd, buf);
     return -1;
 }
-
