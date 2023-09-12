@@ -1,7 +1,7 @@
 # Triangle Numbers
 
 This problem arose from a mobile app project where a UI was organized into a triangular grid.
-There is a comparatively simple iterative workaround, but it is interesting to explore the more efficient, purist mathematical solution.
+There is a comparatively simple iterative workaround, but it is interesting to explore the purist mathematical solution.
 
 ## The Problem
 
