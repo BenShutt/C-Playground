@@ -25,6 +25,6 @@ struct Main: AsyncParsableCommand {
     }
 
     mutating func run() async throws {
-        print("Hello, World - \(directoryURL)")
+        _ = try ImageDirectory(url: directoryURL).validate()
     }
 }
