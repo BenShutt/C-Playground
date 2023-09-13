@@ -35,8 +35,20 @@ struct ImageFile {
 
     init?(url: URL) {
         let pathExtension = url.pathExtension.lowercased()
-        let imageType = ImageType.allCases.first { $0.rawValue == pathExtension }
+        let imageType = ImageType.allCases.first { imageType in
+            imageType.pathExtensions.contains(pathExtension)
+        }
         guard let imageType else { return nil }
         self.init(url: url, imageType: imageType)
+    }
+}
+
+extension ImageFile.ImageType {
+
+    var pathExtensions: Set<String> {
+        var set =  Set([rawValue])
+        guard case .jpeg = self else { return set }
+        set.insert("jpg")
+        return set
     }
 }
