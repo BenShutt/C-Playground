@@ -19,7 +19,6 @@ struct Main: AsyncParsableCommand {
     @Option(help: "URL to the directory of images to upload to the server")
     var directory: String
 
-    /// Map `directory` to `URL`
     var directoryURL: URL {
         URL(filePath: directory)
     }
