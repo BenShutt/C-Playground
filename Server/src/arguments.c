@@ -4,7 +4,7 @@
 Arguments *Arguments_init(int argc, char *argv[])
 {
     char *dir = NULL;
-    check(argc == 4, "Usage: port n_char dir.");
+    check(argc == 4, "Usage: {port} {n_char} {dir}.");
 
     int port = atoi(argv[1]);
     check(port > 0, "Invalid port argument.");

@@ -3,7 +3,7 @@
 
 Arguments *Arguments_init(int argc, char *argv[])
 {
-    check(argc == 3, "Usage: port n_char.");
+    check(argc == 3, "Usage: {port} {n_char}.");
 
     int port = atoi(argv[1]);
     check(port > 0, "Invalid port argument.");
