@@ -16,16 +16,16 @@ struct Request {
     private var urlComponents: URLComponents {
         var components = URLComponents()
         components.scheme = "http"
-        components.host = "192.168.0.205"
+        components.host = "localhost"
         components.port = 8000
-        components.path = "/upload"
+        components.path = "/api/hello"
         components.queryItems = nil
         return components
     }
 
     private var headers: HTTPHeaders {
         var headers = HTTPHeaders.default
-        headers.add(name: "Accept", value: "application/json")
+        headers.add(name: "Accept", value: "text/plain")
         headers.add(name: "Content-Type", value: "application/octet-stream")
         return headers
     }
@@ -33,10 +33,10 @@ struct Request {
     private func urlRequest() throws -> URLRequest {
         var request = try URLRequest(
             url: urlComponents,
-            method: .post
+            method: .get
         )
         request.headers = headers
-        request.httpBody = try imageFile.data
+        // request.httpBody = try imageFile.data
         return request
     }
 
