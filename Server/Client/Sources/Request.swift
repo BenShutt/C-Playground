@@ -40,11 +40,16 @@ struct Request {
         return request
     }
 
-    @discardableResult
-    func execute() async throws -> Status {
+    func request() async throws -> Status {
         try await AF.request(urlRequest())
             .validate()
             .serializingDecodable(Status.self, decoder: JSONDecoder())
             .value
+    }
+
+    func execute() async throws {
+        let status = try await request()
+        let prefix = status.status == 0 ? "Success" : "Failure"
+        print("\(prefix) - '\(imageFile.url)'")
     }
 }

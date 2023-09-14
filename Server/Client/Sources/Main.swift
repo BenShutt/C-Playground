@@ -23,16 +23,10 @@ struct Main: AsyncParsableCommand {
         URL(filePath: (directory as NSString).expandingTildeInPath)
     }
 
-    func executeRequest(imageFile: ImageFile) async throws {
-        let status = try await Request(imageFile: imageFile).execute()
-        let prefix = status.status == 0 ? "Success" : "Failure"
-        print("\(prefix) - '\(imageFile.url)'")
-    }
-
     mutating func run() async throws {
         let imageFiles = try ImageDirectory(url: directoryURL).validate()
         for imageFile in imageFiles {
-            try await executeRequest(imageFile: imageFile)
+            try await Request(imageFile: imageFile).execute()
         }
     }
 }
