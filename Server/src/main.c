@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <mongoose.h>
 
+#define NL "\r\n"
+
 static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
 {
     if(ev != MG_EV_HTTP_MSG) return;
@@ -19,7 +21,7 @@ static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
     mg_http_reply(
         c, 
         200, 
-        "Content-Type: application/json\r\n", 
+        "Content-Type: application/json" NL, 
         "{%m:%d}\n",
         MG_ESC("status"), 
         0
