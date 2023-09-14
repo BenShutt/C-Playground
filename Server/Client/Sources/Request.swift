@@ -25,7 +25,7 @@ struct Request {
 
     private var headers: HTTPHeaders {
         var headers = HTTPHeaders.default
-        headers.add(name: "Accept", value: "text/plain")
+        headers.add(name: "Accept", value: "application/json")
         headers.add(name: "Content-Type", value: "application/octet-stream")
         return headers
     }

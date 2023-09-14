@@ -19,10 +19,10 @@ static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
     mg_http_reply(
         c, 
         200, 
-        "", 
+        "Content-Type: application/json\r\n", 
         "{%m:%d}\n",
         MG_ESC("status"), 
-        1
+        0
     );
 }
 
