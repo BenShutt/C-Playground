@@ -16,7 +16,8 @@ struct Request {
     private var urlComponents: URLComponents {
         var components = URLComponents()
         components.scheme = "http"
-        components.host = "0.0.0.0:8000"
+        components.host = "192.168.0.205"
+        components.port = 8000
         components.path = "/upload"
         components.queryItems = nil
         return components
