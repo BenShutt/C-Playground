@@ -1,0 +1,49 @@
+//
+//  Request.swift
+//  Client
+//
+//  Created by Ben Shutt on 14/09/2023.
+//  Copyright © 2023 Ben Shutt. All rights reserved.
+//
+
+import Foundation
+import Alamofire
+
+struct Request {
+
+    var imageFile: ImageFile
+
+    private var urlComponents: URLComponents {
+        var components = URLComponents()
+        components.scheme = "http"
+        components.host = "0.0.0.0:8000"
+        components.path = "/upload"
+        components.queryItems = nil
+        return components
+    }
+
+    private var headers: HTTPHeaders {
+        var headers = HTTPHeaders.default
+        headers.add(name: "Accept", value: "application/json")
+        headers.add(name: "Content-Type", value: "application/octet-stream")
+        return headers
+    }
+
+    private func urlRequest() throws -> URLRequest {
+        var request = try URLRequest(
+            url: urlComponents,
+            method: .post
+        )
+        request.headers = headers
+        request.httpBody = try imageFile.data
+        return request
+    }
+
+    @discardableResult
+    func execute() async throws -> Status {
+        try await AF.request(urlRequest())
+            .validate()
+            .serializingDecodable(Status.self, decoder: JSONDecoder())
+            .value
+    }
+}

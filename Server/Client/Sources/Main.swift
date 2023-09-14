@@ -20,10 +20,13 @@ struct Main: AsyncParsableCommand {
     var directory: String
 
     var directoryURL: URL {
-        URL(filePath: directory)
+        URL(filePath: (directory as NSString).expandingTildeInPath)
     }
 
     mutating func run() async throws {
-        _ = try ImageDirectory(url: directoryURL).validate()
+        let imageFiles = try ImageDirectory(url: directoryURL).validate()
+        for imageFile in imageFiles {
+            try await Request(imageFile: imageFile).execute()
+        }
     }
 }

@@ -20,11 +20,9 @@ struct ImageFile {
     var url: URL
     var imageType: ImageType
 
-    var data: Data { // TODO
-        switch imageType {
-        case .jpeg: return Data()
-        case .png: return Data()
-        case .heic: return Data()
+    var data: Data {
+        get throws {
+            try Data(contentsOf: url)
         }
     }
 
