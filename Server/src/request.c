@@ -1,72 +1,85 @@
-#include <cjson/cJSON.h>
-#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
 
 #include "request.h"
 #include "check.h"
-#include "json_util.h"
+#include "mongoose_util.h"
+#include "file.h"
 
-// Number of characters supported by file_name (including NUL-terminator)
-#define FILE_NAME_COUNT 100
+#define HTTP_STATUS_CODE_OK 200
+#define HTTP_STATUS_CODE_NO_CONTENT 204
+#define HTTP_STATUS_CODE_BAD_REQUEST 400
+#define HTTP_STATUS_CODE_NOT_FOUND 404
 
-Request *Request_init(RequestParts *request_parts)
+#define ENDPOINT_STATUS "/api/status"
+#define ENDPOINT_UPLOAD "/api/upload"
+
+#define HEADER_FILE_NAME "X-File-Name"
+#define URL_MAX_SIZE 100
+
+static char *make_url(struct mg_http_message *hm, const char *dir)
 {
-    // Pointers to free on error
-    cJSON *json = NULL;
-    char *file_name = NULL;
+    // Get the file name from the custom HTTP header
+    struct mg_str *file_name = mg_http_get_header(hm, HEADER_FILE_NAME);
+    check(file_name != NULL, "Missing '%s' HTTP header.", HEADER_FILE_NAME);
 
-    // Parse the argument into JSON
-    json = cJSON_Parse(request_parts->json);
-    check(json != NULL, "Invalid JSON.");
+    // Check that we can build a valid URL
+    int dir_len = strnlen(dir, URL_MAX_SIZE);
+    int len = dir_len + file_name->len + strlen("/");
+    check(len < URL_MAX_SIZE, "Invalid URL length.");
 
-    // Extract file_name string from JSON
-    file_name = read_string(json, "file_name", FILE_NAME_COUNT);
-    check(file_name != NULL, "Failed to parse 'file_name' JSON key.");
+    // Allocate memory to URL - allowing space for the null terminator
+    char *url = malloc((len + 1) * sizeof(char));
+    check_memory(url);
     
-    // Extract size int from JSON
-    size_t size = read_size(json, "size");
-    check(size >= 0, "Failed to parse 'size' JSON key.");
-    
-    // Only take the relevant first n bytes
-    int rc = RequestParts_trim_data(request_parts, size);
-    check(rc == 0, "Failed to trim data.");
+    // Compose URL from request
+    int rc = sprintf(url, "%s/%.*s", dir, (int)file_name->len, file_name->ptr);
+    check(rc > 0, "Failed to build URL.");
 
-    // Make request to return 
-    Request *request = malloc(sizeof(Request));
-    check_memory(request);
-    request->file_name = file_name;
-    request->size = size;
-    request->data = request_parts->data;
-
-    // Free JSON and return with success
-    cJSON_Delete(json);
-    return request;
+    // Ensure terminating null byte is set
+    url[len] = '\0';
+    return url;
 
 error:
-    if(file_name) free(file_name);
-    if(json) cJSON_Delete(json);
     return NULL;
 }
 
-void Request_deinit(Request *request)
+static int handle_upload(struct mg_http_message *hm, const char *dir)
 {
-    if(request)
-    {
-        if(request->file_name)
-            free(request->file_name);
+    char *url = make_url(hm, dir);
+    check(url != NULL, "Failed to make URL.");
 
-        free(request);
-    }
+    printf("Writing to '%s'\n", url);
+    print_hex((u_int8_t *)hm->body.ptr, 24);
+    
+    free(url);
+    return 0;
+
+error:
+    if(url) free(url);
+    return -1;
 }
 
-void Request_print(Request *request)
+void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
 {
-    if(request)
+    if(ev != MG_EV_HTTP_MSG) return;
+
+    struct mg_http_message *hm = (struct mg_http_message *)ev_data;
+    const char *dir = (const char *)fn_data;
+
+    if(mg_http_match_uri(hm, ENDPOINT_STATUS))
     {
-        printf("Request: file_name: %s, size: %ld.\n", 
-            request->file_name, request->size);
+        http_reply_status(c, HTTP_STATUS_CODE_OK, 0);
+        return;
     }
-    else
+    
+    if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
-       printf("Request: NULL."); 
+        int rc = handle_upload(hm, dir);
+        int status_code = rc == 0 ? HTTP_STATUS_CODE_OK : HTTP_STATUS_CODE_BAD_REQUEST;
+        http_reply_status(c, status_code, rc);
+        return;
     }
+
+    http_reply_status(c, HOST_NOT_FOUND, 0);
 }

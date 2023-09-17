@@ -1,13 +1,14 @@
 # Server
 
-A simple TCP web-server written in C.
+A simple HTTP server written in C.
+The project is built using [Mongoose](https://mongoose.ws) which provides the foundational server implementation.
+It 
 
 ## Usage
 
 To run the program, install dependencies (only needs to be done once) and run:
 
 ```bash
-./scripts/install-c-json.sh
 ./scripts/install-mongoose.sh
 ./scripts/run.sh
 ```
@@ -20,11 +21,18 @@ To get the wireless IP:
 ipconfig getifaddr en0
 ```
 
-Then the server will connect to port `666`.
+Then the server will connect to port `8000`.
+
+## Bytes
+
+To print the bytes of a file:
+
+```bash
+xxd </path/to/file>
+```
 
 ## Dependencies
 
-* [cJSON](https://github.com/DaveGamble/cJSON)
 * [Mongoose](https://github.com/cesanta/mongoose)
 
 ## References

@@ -18,7 +18,7 @@ struct Request {
         components.scheme = "http"
         components.host = "localhost"
         components.port = 8000
-        components.path = "/api/hello"
+        components.path = "/api/upload"
         components.queryItems = nil
         return components
     }
@@ -27,16 +27,17 @@ struct Request {
         var headers = HTTPHeaders.default
         headers.add(name: "Accept", value: "application/json")
         headers.add(name: "Content-Type", value: "application/octet-stream")
+        headers.add(name: "X-File-Name", value: imageFile.url.lastPathComponent)
         return headers
     }
 
     private func urlRequest() throws -> URLRequest {
         var request = try URLRequest(
             url: urlComponents,
-            method: .get
+            method: .post
         )
         request.headers = headers
-        // request.httpBody = try imageFile.data
+        request.httpBody = try imageFile.data
         return request
     }
 

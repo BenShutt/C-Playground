@@ -18,16 +18,10 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # Path to the executable
 EXE="${SCRIPT_DIR}/../bin/main"
 
-# Port for socket
-PORT="666"
-
-# Number of characters for socket
-N_CHAR="1048576" # 1MB
-
-# Directory to write files into
-DIR="${HOME}/Desktop"
+# Directory to write images to
+DIR="${HOME}/Desktop/Images"
 
 # ============================== Main ==============================
 
 # Clean, make, and run the executable
-make clean && make && ${EXE} ${PORT} ${N_CHAR} ${DIR} && make clean
+make clean && make && "${EXE}" "${DIR}" && make clean
