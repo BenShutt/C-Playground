@@ -3,19 +3,20 @@
 
 #include "request.h"
 #include "check.h"
-#include "mongoose_util.h"
 #include "file.h"
-
-#define HTTP_STATUS_CODE_OK 200
-#define HTTP_STATUS_CODE_NO_CONTENT 204
-#define HTTP_STATUS_CODE_BAD_REQUEST 400
-#define HTTP_STATUS_CODE_NOT_FOUND 404
 
 #define ENDPOINT_STATUS "/api/status"
 #define ENDPOINT_UPLOAD "/api/upload"
 
+#define NL "\r\n"
 #define HEADER_FILE_NAME "X-File-Name"
 #define URL_MAX_SIZE 100
+
+typedef enum HTTP_Status_Code { // TODO: Naming convention
+    OK = 200,
+    BAD_REQUEST = 400,
+    NOT_FOUND = 404
+} HTTP_Status_Code;
 
 static char *make_url(struct mg_http_message *hm, const char *dir)
 {
@@ -60,6 +61,18 @@ error:
     return -1;
 }
 
+void http_reply_status(struct mg_connection *c, HTTP_Status_Code status_code, int status)
+{
+    mg_http_reply(
+        c, 
+        status_code, 
+        "Content-Type: application/json" NL, 
+        "{%m:%d}" NL,
+        MG_ESC("status"), 
+        status
+    );
+}
+
 void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
 {
     if(ev != MG_EV_HTTP_MSG) return;
@@ -69,17 +82,17 @@ void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_da
 
     if(mg_http_match_uri(hm, ENDPOINT_STATUS))
     {
-        http_reply_status(c, HTTP_STATUS_CODE_OK, 0);
+        http_reply_status(c, OK, 0);
         return;
     }
     
     if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
         int rc = handle_upload(hm, dir);
-        int status_code = rc == 0 ? HTTP_STATUS_CODE_OK : HTTP_STATUS_CODE_BAD_REQUEST;
+        int status_code = rc == 0 ? OK : BAD_REQUEST;
         http_reply_status(c, status_code, rc);
         return;
     }
 
-    http_reply_status(c, HOST_NOT_FOUND, 0);
+    http_reply_status(c, NOT_FOUND, 0);
 }
