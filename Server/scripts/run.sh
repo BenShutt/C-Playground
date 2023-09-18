@@ -12,19 +12,19 @@ set -o nounset -o errexit -o errtrace -o pipefail
 
 # ============================== Variables ==============================
 
+# Directory to write media to
+MEDIA_DIR="${HOME}/Desktop/Media"
+
 # The directory of this script
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Path to the executable
 EXE="${SCRIPT_DIR}/../bin/main"
 
-# Directory to write images to
-DIR="${HOME}/Desktop/Images"
-
 # ============================== Main ==============================
 
 # Make the directory if it doesn't exist
-mkdir -p "${DIR}"
+mkdir -p "${MEDIA_DIR}"
 
 # Clean, make, and run the executable
-make clean && make && "${EXE}" "${DIR}" && make clean
+make clean && make && "${EXE}" "${MEDIA_DIR}" && make clean

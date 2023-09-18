@@ -1,17 +1,19 @@
 # Server
 
 A simple HTTP server written in C.
-The project is built using [Mongoose](https://mongoose.ws) which provides the foundational server implementation.
-It 
+The project uses [Mongoose](https://mongoose.ws) for the foundational server implementation.
+Files are uploaded via a HTTP request and written to a local directory.
 
 ## Usage
 
-To run the program, install dependencies (only needs to be done once) and run:
+To run the program, install dependencies (only needs to be done once) then run:
 
 ```bash
 ./scripts/install-mongoose.sh
 ./scripts/run.sh
 ```
+
+Update the `run.sh` script to point at a different directory.
 
 ## IP Address
 
@@ -28,7 +30,7 @@ Then the server will connect to port `8000`.
 To print the bytes of a file:
 
 ```bash
-xxd </path/to/file>
+xxd /path/to/file
 ```
 
 ## Dependencies
