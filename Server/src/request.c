@@ -89,7 +89,7 @@ static void http_reply_status(struct mg_connection *c, StatusCode status_code, i
     );
 }
 
-static void http_reply_status_code(struct mg_connection *c, int rc)
+static void http_reply(struct mg_connection *c, int rc)
 {
     int status_code = rc >= 0 ? OK : BAD_REQUEST;
     http_reply_status(c, status_code, rc);
@@ -110,13 +110,13 @@ void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_da
 
     if(mg_http_match_uri(hm, ENDPOINT_EXISTS))
     {
-        http_reply_status_code(c, handle_exists(hm, dir));
+        http_reply(c, handle_exists(hm, dir));
         return;
     }
     
     if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
-        http_reply_status_code(c, handle_upload(hm, dir));
+        http_reply(c, handle_upload(hm, dir));
         return;
     }
 
