@@ -8,6 +8,8 @@
 #include "mongoose_extensions.h"
 #include "file.h"
 
+#define BOOL_STR(C) ((C) == 0 ? "false" : "true")
+
 static const char *make_url(struct mg_http_message *hm, const char *dir)
 {
     // Pointers to free on error
@@ -42,7 +44,7 @@ static int handle_exists(struct mg_http_message *hm, const char *dir)
 
     // Check if the file exists
     int rc = access(url, F_OK) == 0;
-    printf("[EXISTS] %s for '%s'.\n", (rc ? "true" : "false"), url);
+    printf("[EXISTS] %s for '%s'.\n", BOOL_STR(rc), url);
 
     // Clean up and return success
     free(url);
