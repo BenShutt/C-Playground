@@ -7,6 +7,10 @@
 
 const char *make_file_url(const char *dir, const char *file_name)
 {
+    // Check arguments are valid
+    check(dir != NULL, "Invalid dir argument.");
+    check(file_name != NULL, "Invalid file_name argument.");
+
     // Check that we can build a valid URL
     int dir_len = strnlen(dir, URL_MAX_SIZE);
     int sep_len = strnlen("/", URL_MAX_SIZE);

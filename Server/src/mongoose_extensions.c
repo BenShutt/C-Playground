@@ -5,7 +5,7 @@
 
 const char *c_str(struct mg_str str)
 {
-    char *target = malloc(str.len + sizeof('\0'));
+    char *target = malloc(sizeof(char) * str.len + sizeof('\0'));
     check_memory(target);
     strncpy(target, str.ptr, str.len);
     target[str.len] = '\0';
