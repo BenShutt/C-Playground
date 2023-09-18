@@ -7,18 +7,8 @@
 //
 
 import Foundation
-import AppKit
 
 struct File {
-
-    enum FileType: String, CaseIterable {
-        case jpeg
-        case png
-        case heic
-
-        case mov
-        case mp4
-    }
 
     var url: URL
     var fileType: FileType
@@ -44,7 +34,21 @@ struct File {
     }
 }
 
-extension File.FileType {
+// MARK: - File Type
+
+extension File {
+
+    enum FileType: String, CaseIterable {
+        case jpeg
+        case png
+        case heic
+
+        case mov
+        case mp4
+    }
+}
+
+private extension File.FileType {
 
     var pathExtensions: Set<String> {
         var set =  Set([rawValue])
