@@ -26,7 +26,7 @@ static char *make_url(struct mg_http_message *hm, const char *dir)
 
     // Check that we can build a valid URL
     int dir_len = strnlen(dir, URL_MAX_SIZE);
-    int len = dir_len + file_name->len + strlen("/");
+    int len = dir_len + strlen("/") + file_name->len;
     check(len < URL_MAX_SIZE, "Invalid URL length.");
 
     // Allocate memory to URL - allowing space for the null terminator
@@ -50,8 +50,8 @@ static int handle_upload(struct mg_http_message *hm, const char *dir)
     char *url = make_url(hm, dir);
     check(url != NULL, "Failed to make URL.");
 
-    printf("Writing to '%s'\n", url);
-    print_hex((u_int8_t *)hm->body.ptr, 24);
+    write_file((u_int8_t *)hm->body.ptr, hm->body.len, url);
+    printf("'%ld' bytes successfully written to '%s'\n", hm->body.len, url);
     
     free(url);
     return 0;
