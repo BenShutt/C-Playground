@@ -23,5 +23,8 @@ DIR="${HOME}/Desktop/Images"
 
 # ============================== Main ==============================
 
+# Make the directory if it doesn't exist
+mkdir -p "${DIR}"
+
 # Clean, make, and run the executable
 make clean && make && "${EXE}" "${DIR}" && make clean
