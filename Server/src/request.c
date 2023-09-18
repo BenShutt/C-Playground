@@ -66,7 +66,7 @@ static int handle_upload(struct mg_http_message *hm, const char *dir)
     check(rc == 0, "Failed to write file.");
 
     // Print success
-    printf("[UPLOAD] %ld bytes successfully written to '%s'\n", hm->body.len, url);
+    printf("[UPLOAD] %ld bytes successfully written to '%s'.\n", hm->body.len, url);
     
     // Clean up and return success
     free(url);
