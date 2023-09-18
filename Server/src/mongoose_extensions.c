@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 
 #include "mongoose_extensions.h"

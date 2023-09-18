@@ -24,9 +24,9 @@ struct Main: AsyncParsableCommand {
     }
 
     mutating func run() async throws {
-        let imageFiles = try ImageDirectory(url: directoryURL).validate()
-        for imageFile in imageFiles {
-            try await Request(imageFile: imageFile).execute()
+        let files = try Directory(url: directoryURL).validate()
+        for file in files {
+            try await Request(file: file).execute()
         }
     }
 }

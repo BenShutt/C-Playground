@@ -1,5 +1,5 @@
 //
-//  ImageFile.swift
+//  File.swift
 //  Client
 //
 //  Created by Ben Shutt on 13/09/2023.
@@ -9,16 +9,19 @@
 import Foundation
 import AppKit
 
-struct ImageFile {
+struct File {
 
-    enum ImageType: String, CaseIterable {
+    enum FileType: String, CaseIterable {
         case jpeg
         case png
         case heic
+
+        case mov
+        case mp4
     }
 
     var url: URL
-    var imageType: ImageType
+    var fileType: FileType
 
     var data: Data {
         get throws {
@@ -26,22 +29,22 @@ struct ImageFile {
         }
     }
 
-    private init(url: URL, imageType: ImageType) {
+    private init(url: URL, fileType: FileType) {
         self.url = url
-        self.imageType = imageType
+        self.fileType = fileType
     }
 
     init?(url: URL) {
         let pathExtension = url.pathExtension.lowercased()
-        let imageType = ImageType.allCases.first { imageType in
-            imageType.pathExtensions.contains(pathExtension)
+        let fileType = FileType.allCases.first { fileType in
+            fileType.pathExtensions.contains(pathExtension)
         }
-        guard let imageType else { return nil }
-        self.init(url: url, imageType: imageType)
+        guard let fileType else { return nil }
+        self.init(url: url, fileType: fileType)
     }
 }
 
-extension ImageFile.ImageType {
+extension File.FileType {
 
     var pathExtensions: Set<String> {
         var set =  Set([rawValue])

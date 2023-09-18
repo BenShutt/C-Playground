@@ -1,5 +1,5 @@
 //
-//  ImageDirectory.swift
+//  Directory.swift
 //  Client
 //
 //  Created by Ben Shutt on 13/09/2023.
@@ -8,8 +8,8 @@
 
 import Foundation
 
-/// Encapsulate the logic of the image directory
-struct ImageDirectory {
+/// Encapsulate the logic of the media directory
+struct Directory {
 
     /// Map a `URL` to an optional type
     typealias Operation<Target> = (URL) -> Target?
@@ -30,23 +30,23 @@ struct ImageDirectory {
         }
     }
 
-    /// Get the image files printing when a file is not a valid image
-    /// - Returns: Valid image files
-    func validate() throws -> [ImageFile] {
-        let imageFiles = try forEach { url in
-            let imageFile = ImageFile(url: url)
-            if imageFile == nil {
-                print("Unsupported image URL: '\(url)'")
+    /// Get the media files printing when a file is not a valid media
+    /// - Returns: Valid media files
+    func validate() throws -> [File] {
+        let files = try forEach { url in
+            let file = File(url: url)
+            if file == nil {
+                print("Unsupported media URL: '\(url)'")
             }
-            return imageFile
+            return file
         }
 
-        if imageFiles.isEmpty {
-            print("No images found in: '\(url)'")
+        if files.isEmpty {
+            print("No media found in: '\(url)'")
         } else {
-            print("\(imageFiles.count) image file(s) found in: '\(url)'")
+            print("\(files.count) media file(s) found in: '\(url)'")
         }
 
-        return imageFiles
+        return files
     }
 }

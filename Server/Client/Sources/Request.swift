@@ -11,7 +11,7 @@ import Alamofire
 
 struct Request {
 
-    var imageFile: ImageFile
+    var file: File
 
     private var urlComponents: URLComponents {
         var components = URLComponents()
@@ -27,7 +27,7 @@ struct Request {
         var headers = HTTPHeaders.default
         headers.add(name: "Accept", value: "application/json")
         headers.add(name: "Content-Type", value: "application/octet-stream")
-        headers.add(name: "X-File-Name", value: imageFile.url.lastPathComponent)
+        headers.add(name: "X-File-Name", value: file.url.lastPathComponent)
         return headers
     }
 
@@ -37,7 +37,7 @@ struct Request {
             method: .post
         )
         request.headers = headers
-        request.httpBody = try imageFile.data
+        request.httpBody = try file.data
         return request
     }
 
@@ -51,6 +51,6 @@ struct Request {
     func execute() async throws {
         let status = try await request()
         let prefix = status.status == 0 ? "Success" : "Failure"
-        print("\(prefix) - '\(imageFile.url)'")
+        print("\(prefix) for '\(file.url)'")
     }
 }

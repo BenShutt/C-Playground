@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 
@@ -11,12 +12,6 @@
 
 #define NL "\r\n"
 #define HEADER_FILE_NAME "X-File-Name"
-
-typedef enum StatusCode {
-    OK = 200,
-    BAD_REQUEST = 400,
-    NOT_FOUND = 404
-} StatusCode;
 
 static int handle_upload(struct mg_http_message *hm, const char *dir)
 {
@@ -37,7 +32,10 @@ static int handle_upload(struct mg_http_message *hm, const char *dir)
     check(url != NULL, "Failed to make URL.");
 
     // Write HTTP body to file
-    write_file((u_int8_t *)hm->body.ptr, hm->body.len, url);
+    int rc = write_file((u_int8_t *)hm->body.ptr, hm->body.len, url);
+    check(rc == 0, "Failed to write file.");
+
+    // Print success
     printf("%ld bytes successfully written to '%s'\n", hm->body.len, url);
     
     // Clean up and return success
