@@ -32,17 +32,23 @@ error:
 
 int write_file(const uint8_t *data, size_t n_bytes, const char *url)
 {
+    // Pointers to free on error
     FILE *file = NULL;
+
+    // Check arguments are valid
     check(data != NULL, "Invalid data argument.");
     check(n_bytes >= 0, "Invalid n_bytes argument.");
     check(url != NULL, "Invalid url argument.");
 
+    // Open binary file for writing
     file = fopen(url, "wb");
     check(file != NULL, "Failed to open file '%s'.", url);
 
+    // Write bytes to file
     fwrite(data, sizeof(uint8_t), n_bytes, file);
     check(ferror(file) == 0, "Failed to write file '%s'.", url);
 
+    // Close and exit with success
     fclose(file);
     return 0;
 
