@@ -3,6 +3,33 @@
 #include "file.h"
 #include "check.h"
 
+#define URL_MAX_SIZE 100
+
+const char *make_file_url(const char *dir, const char *file_name)
+{
+    // Check that we can build a valid URL
+    int dir_len = strnlen(dir, URL_MAX_SIZE);
+    int sep_len = strnlen("/", URL_MAX_SIZE);
+    int file_name_len = strnlen(file_name, URL_MAX_SIZE);
+    int len = dir_len + sep_len + file_name_len;
+    check(len < URL_MAX_SIZE, "Invalid URL length.");
+
+    // Allocate memory to URL - allowing space for the null terminator
+    char *url = malloc((len + 1) * sizeof(char));
+    check_memory(url);
+    
+    // Compose URL from request
+    int rc = sprintf(url, "%s/%s", dir, file_name);
+    check(rc > 0, "Failed to build URL.");
+
+    // Ensure terminating null byte is set
+    url[len] = '\0';
+    return url;
+
+error:
+    return NULL;
+}
+
 int write_file(const uint8_t *data, size_t n_bytes, const char *url)
 {
     FILE *file = NULL;
@@ -22,42 +49,4 @@ int write_file(const uint8_t *data, size_t n_bytes, const char *url)
 error:
     if(file) fclose(file);
     return -1;
-}
-
-uint8_t *read_file(size_t n_bytes, const char *url)
-{
-    FILE *file = NULL;
-    uint8_t *buf = NULL;
-    check(n_bytes >= 0, "Invalid n_bytes argument.");
-    check(url != NULL, "Invalid url argument.");
-
-    file = fopen(url, "rb");
-    check(file != NULL, "Failed to open file '%s'.", url);
-    
-    int rc = fseek(file, 0, SEEK_SET);
-    check(rc == 0, "Failed to seek file '%s'.", url);
-
-    buf = malloc(sizeof(uint8_t) * n_bytes);
-    check_memory(buf);
-
-    fread(buf, sizeof(uint8_t), n_bytes, file);
-    check(ferror(file) == 0, "Failed to read file '%s'.", url);
-
-    fclose(file);
-    return buf;
-
-error:
-    if(buf) free(buf);
-    if(file) fclose(file);
-    return NULL;
-}
-
-void print_hex(uint8_t *buf, size_t n)
-{
-    if(n <= 0) return;
-
-    for(size_t i = 0; i < n; i++)
-        printf("%02x", buf[i]);
-    
-    printf("\n");
 }

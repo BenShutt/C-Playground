@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+const char *make_file_url(const char *dir, const char *file_name);
 int write_file(const uint8_t *data, size_t n_bytes, const char *url);
-uint8_t *read_file(size_t n_bytes, const char *url);
-void print_hex(uint8_t *buf, size_t n);
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "request.h"
 #include "check.h"
+#include "mongoose_extensions.h"
 #include "file.h"
 
 #define ENDPOINT_STATUS "/api/status"
@@ -10,58 +11,47 @@
 
 #define NL "\r\n"
 #define HEADER_FILE_NAME "X-File-Name"
-#define URL_MAX_SIZE 100
 
-typedef enum HTTP_Status_Code { // TODO: Naming convention
+typedef enum StatusCode {
     OK = 200,
     BAD_REQUEST = 400,
     NOT_FOUND = 404
-} HTTP_Status_Code;
-
-static char *make_url(struct mg_http_message *hm, const char *dir)
-{
-    // Get the file name from the custom HTTP header
-    struct mg_str *file_name = mg_http_get_header(hm, HEADER_FILE_NAME);
-    check(file_name != NULL, "Missing '%s' HTTP header.", HEADER_FILE_NAME);
-
-    // Check that we can build a valid URL
-    int dir_len = strnlen(dir, URL_MAX_SIZE);
-    int len = dir_len + strlen("/") + file_name->len;
-    check(len < URL_MAX_SIZE, "Invalid URL length.");
-
-    // Allocate memory to URL - allowing space for the null terminator
-    char *url = malloc((len + 1) * sizeof(char));
-    check_memory(url);
-    
-    // Compose URL from request
-    int rc = sprintf(url, "%s/%.*s", dir, (int)file_name->len, file_name->ptr);
-    check(rc > 0, "Failed to build URL.");
-
-    // Ensure terminating null byte is set
-    url[len] = '\0';
-    return url;
-
-error:
-    return NULL;
-}
+} StatusCode;
 
 static int handle_upload(struct mg_http_message *hm, const char *dir)
 {
-    char *url = make_url(hm, dir);
+    // Pointers to free on error
+    char *file_name = NULL;
+    char *url = NULL;
+
+    // Get the file name from the custom HTTP header
+    struct mg_str *file_name_str = mg_http_get_header(hm, HEADER_FILE_NAME);
+    check(file_name_str != NULL, "Missing '%s' HTTP header.", HEADER_FILE_NAME);
+
+    // Map to C string
+    file_name = (char *)c_str(*file_name_str);
+    check(file_name != NULL, "Failed to map to C string.");
+
+    // Make URL
+    url = (char *)make_file_url(dir, file_name);
     check(url != NULL, "Failed to make URL.");
 
+    // Write HTTP body to file
     write_file((u_int8_t *)hm->body.ptr, hm->body.len, url);
-    printf("'%ld' bytes successfully written to '%s'\n", hm->body.len, url);
+    printf("%ld bytes successfully written to '%s'\n", hm->body.len, url);
     
+    // Clean up and return success
     free(url);
+    free(file_name);
     return 0;
 
 error:
     if(url) free(url);
+    if(file_name) free(file_name);
     return -1;
 }
 
-void http_reply_status(struct mg_connection *c, HTTP_Status_Code status_code, int status)
+void http_reply_status(struct mg_connection *c, StatusCode status_code, int status)
 {
     mg_http_reply(
         c, 
