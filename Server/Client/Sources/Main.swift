@@ -27,7 +27,7 @@ struct Main: AsyncParsableCommand {
         let files = try Directory(url: directoryURL).validate()
         for file in files {
             let request = Request(file: file, enpoint: .exists)
-            let exists = try await request.execute() != 0
+            let exists = try await request.execute() == 1
             if !exists {
                 try await Request(file: file, enpoint: .upload).execute()
             }
