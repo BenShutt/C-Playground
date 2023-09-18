@@ -3,12 +3,12 @@
 
 #include <mongoose.h>
 
+#define NL "\r\n"
+#define BOOL_STR(C) ((C) == 0 ? "false" : "true")
+
 #define ENDPOINT_STATUS "/api/status"
 #define ENDPOINT_EXISTS "/api/exists"
 #define ENDPOINT_UPLOAD "/api/upload"
-
-#define NL "\r\n"
-#define HEADER_FILE_NAME "X-File-Name"
 
 typedef enum StatusCode 
 {

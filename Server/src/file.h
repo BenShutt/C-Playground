@@ -3,8 +3,12 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <mongoose.h>
 
-const char *make_file_url(const char *dir, const char *file_name);
+#define URL_MAX_SIZE 100
+#define HEADER_FILE_NAME "X-File-Name"
+
+const char *make_file_url(struct mg_http_message *hm, const char *dir);
 int write_file(const uint8_t *data, size_t n_bytes, const char *url);
 
 #endif

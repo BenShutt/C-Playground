@@ -2,10 +2,9 @@
 
 #include "file.h"
 #include "check.h"
+#include "mongoose_extensions.h"
 
-#define URL_MAX_SIZE 100
-
-const char *make_file_url(const char *dir, const char *file_name)
+static const char *make_url(const char *dir, const char *file_name)
 {
     // Check arguments are valid
     check(dir != NULL, "Invalid dir argument.");
@@ -31,6 +30,32 @@ const char *make_file_url(const char *dir, const char *file_name)
     return url;
 
 error:
+    return NULL;
+}
+
+const char *make_file_url(struct mg_http_message *hm, const char *dir)
+{
+    // Pointers to free on error
+    char *file_name = NULL;
+
+    // Get the file name from the custom HTTP header
+    struct mg_str *file_name_str = mg_http_get_header(hm, HEADER_FILE_NAME);
+    check(file_name_str != NULL, "Missing '%s' HTTP header.", HEADER_FILE_NAME);
+
+    // Map to C string
+    file_name = (char *)c_str(*file_name_str);
+    check(file_name != NULL, "Failed to map to C string.");
+
+    // Make URL
+    const char *url = (char *)make_url(dir, file_name);
+    check(url != NULL, "Failed to make URL.");
+
+    // Clean up and return success
+    free(file_name);
+    return url;
+
+error:
+    if(file_name) free(file_name);
     return NULL;
 }
 
