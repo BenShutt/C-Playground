@@ -11,14 +11,20 @@ import Alamofire
 
 struct Request {
 
+    enum Endpoint {
+        case exists
+        case upload
+    }
+
     var file: File
+    var enpoint: Endpoint
 
     private var urlComponents: URLComponents {
         var components = URLComponents()
         components.scheme = "http"
         components.host = "localhost"
         components.port = 8000
-        components.path = "/api/upload"
+        components.path = enpoint.path
         components.queryItems = nil
         return components
     }
@@ -34,23 +40,48 @@ struct Request {
     private func urlRequest() throws -> URLRequest {
         var request = try URLRequest(
             url: urlComponents,
-            method: .post
+            method: enpoint.method
         )
         request.headers = headers
-        request.httpBody = try file.data
+        request.httpBody = enpoint.hasBody ? try file.data : nil
         return request
     }
 
-    func request() async throws -> Status {
+    private func request() async throws -> Status {
         try await AF.request(urlRequest())
             .validate()
             .serializingDecodable(Status.self, decoder: JSONDecoder())
             .value
     }
 
-    func execute() async throws {
-        let status = try await request()
-        let prefix = status.status == 0 ? "Success" : "Failure"
-        print("\(prefix) for '\(file.url)'")
+    @discardableResult
+    func execute() async throws -> Int {
+        let status = try await request().status
+        print("Status \(status) for '\(file.url)'")
+        return status
+    }
+}
+
+extension Request.Endpoint {
+
+    var method: HTTPMethod {
+        switch self {
+        case .exists: return .get
+        case .upload: return .post
+        }
+    }
+
+    var path: String {
+        switch self {
+        case .exists: return "/api/exists"
+        case .upload: return "/api/upload"
+        }
+    }
+
+    var hasBody: Bool {
+        switch self {
+        case .exists: return false
+        case .upload: return true
+        }
     }
 }

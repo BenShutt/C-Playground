@@ -26,7 +26,11 @@ struct Main: AsyncParsableCommand {
     mutating func run() async throws {
         let files = try Directory(url: directoryURL).validate()
         for file in files {
-            try await Request(file: file).execute()
+            let request = Request(file: file, enpoint: .exists)
+            let exists = try await request.execute() != 0
+            if !exists {
+                try await Request(file: file, enpoint: .upload).execute()
+            }
         }
     }
 }

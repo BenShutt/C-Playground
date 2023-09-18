@@ -1,23 +1,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <unistd.h>
 
 #include "request.h"
 #include "check.h"
 #include "mongoose_extensions.h"
 #include "file.h"
 
-#define ENDPOINT_STATUS "/api/status"
-#define ENDPOINT_UPLOAD "/api/upload"
-
-#define NL "\r\n"
-#define HEADER_FILE_NAME "X-File-Name"
-
-static int handle_upload(struct mg_http_message *hm, const char *dir)
+static const char *make_url(struct mg_http_message *hm, const char *dir)
 {
     // Pointers to free on error
     char *file_name = NULL;
-    char *url = NULL;
 
     // Get the file name from the custom HTTP header
     struct mg_str *file_name_str = mg_http_get_header(hm, HEADER_FILE_NAME);
@@ -28,7 +22,41 @@ static int handle_upload(struct mg_http_message *hm, const char *dir)
     check(file_name != NULL, "Failed to map to C string.");
 
     // Make URL
-    url = (char *)make_file_url(dir, file_name);
+    const char *url = (char *)make_file_url(dir, file_name);
+    check(url != NULL, "Failed to make URL.");
+
+    // Clean up and return success
+    free(file_name);
+    return url;
+
+error:
+    if(file_name) free(file_name);
+    return NULL;
+}
+
+static int handle_exists(struct mg_http_message *hm, const char *dir)
+{
+    // Make URL
+    char *url = (char *)make_url(hm, dir);
+    check(url != NULL, "Failed to make URL.");
+
+    // Check if the file exists
+    int rc = access(url, F_OK) == 0;
+    printf("[EXISTS] %s for '%s'.\n", (rc ? "true" : "false"), url);
+
+    // Clean up and return success
+    free(url);
+    return rc;
+
+error:
+    if(url) free(url);
+    return -1;
+}
+
+static int handle_upload(struct mg_http_message *hm, const char *dir)
+{
+    // Make URL
+    char *url = (char *)make_url(hm, dir);
     check(url != NULL, "Failed to make URL.");
 
     // Write HTTP body to file
@@ -36,20 +64,18 @@ static int handle_upload(struct mg_http_message *hm, const char *dir)
     check(rc == 0, "Failed to write file.");
 
     // Print success
-    printf("%ld bytes successfully written to '%s'\n", hm->body.len, url);
+    printf("[UPLOAD] %ld bytes successfully written to '%s'\n", hm->body.len, url);
     
     // Clean up and return success
     free(url);
-    free(file_name);
     return 0;
 
 error:
     if(url) free(url);
-    if(file_name) free(file_name);
     return -1;
 }
 
-void http_reply_status(struct mg_connection *c, StatusCode status_code, int status)
+static void http_reply_status(struct mg_connection *c, StatusCode status_code, int status)
 {
     mg_http_reply(
         c, 
@@ -59,6 +85,12 @@ void http_reply_status(struct mg_connection *c, StatusCode status_code, int stat
         MG_ESC("status"), 
         status
     );
+}
+
+static void http_reply_status_code(struct mg_connection *c, int rc)
+{
+    int status_code = rc >= 0 ? OK : BAD_REQUEST;
+    http_reply_status(c, status_code, rc);
 }
 
 void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
@@ -73,12 +105,16 @@ void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_da
         http_reply_status(c, OK, 0);
         return;
     }
+
+    if(mg_http_match_uri(hm, ENDPOINT_EXISTS))
+    {
+        http_reply_status_code(c, handle_exists(hm, dir));
+        return;
+    }
     
     if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
-        int rc = handle_upload(hm, dir);
-        int status_code = rc == 0 ? OK : BAD_REQUEST;
-        http_reply_status(c, status_code, rc);
+        http_reply_status_code(c, handle_upload(hm, dir));
         return;
     }
 

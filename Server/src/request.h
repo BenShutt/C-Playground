@@ -3,6 +3,13 @@
 
 #include <mongoose.h>
 
+#define ENDPOINT_STATUS "/api/status"
+#define ENDPOINT_EXISTS "/api/exists"
+#define ENDPOINT_UPLOAD "/api/upload"
+
+#define NL "\r\n"
+#define HEADER_FILE_NAME "X-File-Name"
+
 typedef enum StatusCode 
 {
     OK = 200,
