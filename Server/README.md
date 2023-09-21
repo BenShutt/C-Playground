@@ -17,7 +17,7 @@ To run the program, install dependencies (only needs to be done once) then run:
 ./scripts/run.sh
 ```
 
-Update the `run.sh` script to point at a different directory.
+Update the `run.sh` script to point at a different directory or update the `recv` buffer size.
 
 ## IP Address
 
