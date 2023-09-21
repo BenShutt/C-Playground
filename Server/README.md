@@ -49,3 +49,13 @@ xxd /path/to/file
 * [Makefile SO Post](https://stackoverflow.com/questions/30573481)
 * [LCTHW](https://github.com/zedshaw/learn-c-the-hard-way-lectures)
 * [Building a Static Library](https://www.oreilly.com/library/view/c-cookbook/0596007612/ch01s04.html)
+
+## TODO
+
+Sometimes, rarely, a request *seems* to hang.
+I am not entirely sure at this point where in the chain of operations this happens.
+Some options it could be:
+
+* Mongoose request handler or poll/listen
+* Writing of the file to disk
+* Client-side issue
