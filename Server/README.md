@@ -4,6 +4,10 @@ A simple HTTP server written in C.
 The project uses [Mongoose](https://mongoose.ws) for the foundational server implementation.
 Files are uploaded via a HTTP request and written to a local directory.
 
+There is a companion [MediaExport](https://github.com/BenShutt/MediaExport) Swift iOS app. The client syncs the images and videos stored on the device to the server over the WIFI.
+
+While this server successfully syncs files with a client, it was built for learning purposes and there are better ways to do it - i.e. do not use in production!
+
 ## Usage
 
 To run the program, install dependencies (only needs to be done once) then run:
@@ -24,6 +28,8 @@ ipconfig getifaddr en0
 ```
 
 Then the server will connect to port `8000`.
+
+You will need this if connecting from a device that is not hosting the server (e.g. mobile to laptop).
 
 ## Bytes
 

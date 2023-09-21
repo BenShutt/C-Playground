@@ -91,5 +91,5 @@ void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_da
         return;
     }
 
-    http_reply_status(c, NOT_FOUND, 0);
+    http_reply_status(c, NOT_FOUND, -1);
 }
