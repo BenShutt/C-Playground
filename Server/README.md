@@ -4,7 +4,7 @@ A simple HTTP server written in C.
 The project uses [Mongoose](https://mongoose.ws) for the foundational server implementation.
 Files are uploaded via a HTTP request and written to a local directory.
 
-There is a companion [MediaExport](https://github.com/BenShutt/MediaExport) iOS app. The client syncs the media (images, videos, etc) stored on the device with the server over the WIFI.
+There is a companion [MediaExport](https://github.com/BenShutt/MediaExport) iOS app. The client syncs the media (images, videos, etc) on the device with the server over the WIFI.
 
 While this server successfully syncs files with a client, it was built for learning purposes and there are better ways to do it - i.e. do not use in production!
 
