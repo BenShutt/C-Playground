@@ -32,7 +32,7 @@ TMP_DIR="/tmp/${TARGET}"
 REMOTE_URL="https://raw.githubusercontent.com/cesanta/mongoose/master"
 
 # Max receive buffer size
-MAX_RECV_SIZE="$((12 * 1024 * 1024))" # 12MB
+MAX_RECV_SIZE="$((900 * 1024 * 1024))" # 900MB
 
 # ============================== Functions ==============================
 
