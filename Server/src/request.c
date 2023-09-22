@@ -37,7 +37,8 @@ static void on_http_message(struct mg_connection *c, struct mg_http_message *hm,
     }
     else if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
-        // do nothing, handled in chunks
+        // Should not get here as uploads are handled in chunks
+        http_reply_status(c, BAD_REQUEST, -1);
     }
     else
     {
