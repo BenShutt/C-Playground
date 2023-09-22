@@ -37,7 +37,6 @@ static void on_http_message(struct mg_connection *c, struct mg_http_message *hm,
     }
     else if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
-        printf("[WARN] Shouldn't have got here.\n");
         // do nothing, handled in chunks
     }
     else
