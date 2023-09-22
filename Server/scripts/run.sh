@@ -24,9 +24,6 @@ EXE="${SCRIPT_DIR}/../${TARGET}"
 # Directory to write media to
 MEDIA_DIR="${HOME}/Desktop/Media"
 
-# Max receive buffer size
-MAX_RECV_SIZE="$((10 * 1024 * 1024))" # 10MB
-
 # ============================== Functions ==============================
 
 function clean {
@@ -34,7 +31,7 @@ function clean {
 }
 
 function build {
-    make "${TARGET}" "XFLAGS=-D MG_MAX_RECV_SIZE=${MAX_RECV_SIZE}"
+    make "${TARGET}"
 }
 
 function run {

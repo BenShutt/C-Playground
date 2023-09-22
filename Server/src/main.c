@@ -14,10 +14,6 @@ int main(int argc, char *argv[])
     check(argc == 2, "Please provide a directory as a command line argument.");
     const char *dir = argv[1];
 
-    // Print max recv buffer size
-    size_t max_recv_size = (size_t)MG_MAX_RECV_SIZE;
-    printf("MG_MAX_RECV_SIZE is set to %lu.\n", max_recv_size);
-
     // Start Mongoose server
     struct mg_mgr mgr;
     mg_log_set(MG_LL);
