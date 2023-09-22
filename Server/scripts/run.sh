@@ -15,8 +15,11 @@ set -o nounset -o errexit -o errtrace -o pipefail
 # The directory of this script
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+# Makefile target
+TARGET="bin/main"
+
 # Path to the executable
-EXE="${SCRIPT_DIR}/../bin/main"
+EXE="${SCRIPT_DIR}/../${TARGET}"
 
 # Directory to write media to
 MEDIA_DIR="${HOME}/Desktop/Media"
@@ -31,7 +34,7 @@ function clean {
 }
 
 function build {
-    make "XFLAGS=-D MG_MAX_RECV_SIZE=${MAX_RECV_SIZE}"
+    make "${TARGET}" "XFLAGS=-D MG_MAX_RECV_SIZE=${MAX_RECV_SIZE}"
 }
 
 function run {
