@@ -1,51 +1,15 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <unistd.h>
 
 #include "request.h"
-#include "check.h"
-#include "file.h"
+#include "endpoints.h"
 
-static int handle_exists(struct mg_http_message *hm, const char *dir)
+#define NL "\r\n"
+#define STATUS_CODE(C) ((C) >= 0 ? OK : BAD_REQUEST)
+
+static void on_error(const char *message)
 {
-    // Make URL
-    char *url = (char *)make_file_url(hm, dir);
-    check(url != NULL, "Failed to make URL.");
-
-    // Check if the file exists
-    int rc = access(url, F_OK) == 0;
-    printf("[EXISTS] %s for '%s'.\n", BOOL_STR(rc), url);
-
-    // Clean up and return success
-    free(url);
-    return rc;
-
-error:
-    if(url) free(url);
-    return -1;
-}
-
-static int handle_upload(struct mg_http_message *hm, const char *dir)
-{
-    // Make URL
-    char *url = (char *)make_file_url(hm, dir);
-    check(url != NULL, "Failed to make URL.");
-
-    // Write HTTP body to file
-    int rc = write_file((u_int8_t *)hm->body.ptr, hm->body.len, url);
-    check(rc == 0, "Failed to write file.");
-
-    // Print success
-    printf("[UPLOAD] %ld bytes successfully written to '%s'.\n", hm->body.len, url);
-    
-    // Clean up and return success
-    free(url);
-    return 0;
-
-error:
-    if(url) free(url);
-    return -1;
+    const char *error_message = message != NULL ? message : "Unknown error";
+    printf("[MG_ERROR] %s.\n", error_message);
 }
 
 static void http_reply_status(struct mg_connection *c, StatusCode status_code, int status)
@@ -60,39 +24,26 @@ static void http_reply_status(struct mg_connection *c, StatusCode status_code, i
     );
 }
 
-static void http_reply(struct mg_connection *c, int rc)
-{
-    int status_code = rc >= 0 ? OK : BAD_REQUEST;
-    http_reply_status(c, status_code, rc);
-}
-
-void on_error(const char *message)
-{
-    const char *error_message = message != NULL ? message : "Unknown error";
-    printf("[MG_ERROR] %s.\n", error_message);
-}
-
-void on_http_message(struct mg_connection *c, struct mg_http_message *hm, const char *dir)
+static void on_http_message(struct mg_connection *c, struct mg_http_message *hm, const char *dir)
 {
     if(mg_http_match_uri(hm, ENDPOINT_STATUS))
     {
-        http_reply_status(c, OK, 0);
-        return;
+        http_reply_status(c, OK, handle_status());
     }
-
-    if(mg_http_match_uri(hm, ENDPOINT_EXISTS))
+    else if(mg_http_match_uri(hm, ENDPOINT_EXISTS))
     {
-        http_reply(c, handle_exists(hm, dir));
-        return;
+        int rc = handle_exists(hm, dir);
+        http_reply_status(c, STATUS_CODE(rc), rc);
     }
-    
-    if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
+    else if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
-        http_reply(c, handle_upload(hm, dir));
-        return;
+        int rc = handle_upload(hm, dir);
+        http_reply_status(c, STATUS_CODE(rc), rc);
     }
-
-    http_reply_status(c, NOT_FOUND, -1);
+    else
+    {
+        http_reply_status(c, NOT_FOUND, -1);
+    }
 }
 
 void on_http_event(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
@@ -101,14 +52,11 @@ void on_http_event(struct mg_connection *c, int ev, void *ev_data, void *fn_data
     {
         const char *message = (char *)ev_data;
         on_error(message);
-        return;
     }
-
-    if(ev == MG_EV_HTTP_MSG)
+    else if(ev == MG_EV_HTTP_MSG)
     {
         struct mg_http_message *hm = (struct mg_http_message *)ev_data;
         const char *dir = (const char *)fn_data;
         on_http_message(c, hm, dir);
-        return;
     } 
 }

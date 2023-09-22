@@ -6,6 +6,8 @@
 
 static const char *make_url(const char *dir, const char *file_name)
 {
+    char *url = NULL;
+
     // Check arguments are valid
     check(dir != NULL, "Invalid dir argument.");
     check(file_name != NULL, "Invalid file_name argument.");
@@ -18,7 +20,7 @@ static const char *make_url(const char *dir, const char *file_name)
     check(len < URL_MAX_SIZE, "Invalid URL length.");
 
     // Allocate memory to URL - allowing space for the null terminator
-    char *url = malloc((len + 1) * sizeof(char));
+    url = malloc((len + 1) * sizeof(char));
     check_memory(url);
     
     // Compose URL from request
@@ -30,6 +32,7 @@ static const char *make_url(const char *dir, const char *file_name)
     return url;
 
 error:
+    if(url) free(url);
     return NULL;
 }
 

@@ -3,13 +3,6 @@
 
 #include <mongoose.h>
 
-#define NL "\r\n"
-#define BOOL_STR(C) ((C) == 0 ? "false" : "true")
-
-#define ENDPOINT_STATUS "/api/status"
-#define ENDPOINT_EXISTS "/api/exists"
-#define ENDPOINT_UPLOAD "/api/upload"
-
 typedef enum StatusCode 
 {
     OK = 200,
