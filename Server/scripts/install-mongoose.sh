@@ -31,9 +31,6 @@ TMP_DIR="/tmp/${TARGET}"
 # Github raw-content URL to download source files from
 REMOTE_URL="https://raw.githubusercontent.com/cesanta/mongoose/master"
 
-# Max receive buffer size
-MAX_RECV_SIZE="$((900 * 1024 * 1024))" # 900MB
-
 # ============================== Functions ==============================
 
 # Remove temporary directory
@@ -64,7 +61,7 @@ download "${TARGET}.h"
 download "${TARGET}.c"
 
 # Compile into object file
-clang -c -o "${TARGET}.o" "${TARGET}.c" -D "MG_MAX_RECV_SIZE=${MAX_RECV_SIZE}"
+clang -c -o "${TARGET}.o" "${TARGET}.c"
 
 # Make the library file
 ar ru "lib${TARGET}.a" "${TARGET}.o"

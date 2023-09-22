@@ -66,13 +66,14 @@ static void http_reply(struct mg_connection *c, int rc)
     http_reply_status(c, status_code, rc);
 }
 
-void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
+void on_error(const char *message)
 {
-    if(ev != MG_EV_HTTP_MSG) return;
+    const char *error_message = message != NULL ? message : "Unknown error";
+    printf("[MG_ERROR] %s.\n", error_message);
+}
 
-    struct mg_http_message *hm = (struct mg_http_message *)ev_data;
-    const char *dir = (const char *)fn_data;
-
+void on_http_message(struct mg_connection *c, struct mg_http_message *hm, const char *dir)
+{
     if(mg_http_match_uri(hm, ENDPOINT_STATUS))
     {
         http_reply_status(c, OK, 0);
@@ -92,4 +93,22 @@ void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_da
     }
 
     http_reply_status(c, NOT_FOUND, -1);
+}
+
+void on_http_event(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
+{
+    if(ev == MG_EV_ERROR)
+    {
+        const char *message = (char *)ev_data;
+        on_error(message);
+        return;
+    }
+
+    if(ev == MG_EV_HTTP_MSG)
+    {
+        struct mg_http_message *hm = (struct mg_http_message *)ev_data;
+        const char *dir = (const char *)fn_data;
+        on_http_message(c, hm, dir);
+        return;
+    } 
 }

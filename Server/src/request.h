@@ -17,6 +17,6 @@ typedef enum StatusCode
     NOT_FOUND = 404
 } StatusCode;
 
-void on_http_message(struct mg_connection *c, int ev, void *ev_data, void *fn_data);
+void on_http_event(struct mg_connection *c, int ev, void *ev_data, void *fn_data);
 
 #endif
