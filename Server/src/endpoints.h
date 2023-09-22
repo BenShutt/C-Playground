@@ -9,6 +9,6 @@
 
 int handle_status();
 int handle_exists(struct mg_http_message *hm, const char *dir);
-int handle_upload(struct mg_http_message *hm, const char *dir);
+int handle_upload(struct mg_http_message *hm, struct mg_str data, const char *dir);
 
 #endif

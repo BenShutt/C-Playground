@@ -4,7 +4,6 @@
 #include "endpoints.h"
 
 #define NL "\r\n"
-#define STATUS_CODE(C) ((C) >= 0 ? OK : BAD_REQUEST)
 
 static void on_error(const char *message)
 {
@@ -33,12 +32,13 @@ static void on_http_message(struct mg_connection *c, struct mg_http_message *hm,
     else if(mg_http_match_uri(hm, ENDPOINT_EXISTS))
     {
         int rc = handle_exists(hm, dir);
-        http_reply_status(c, STATUS_CODE(rc), rc);
+        int status_code = rc >= 0 ? OK : BAD_REQUEST;
+        http_reply_status(c, status_code, rc);
     }
     else if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
-        int rc = handle_upload(hm, dir);
-        http_reply_status(c, STATUS_CODE(rc), rc);
+        printf("[WARN] Shouldn't have got here.\n");
+        // do nothing, handled in chunks
     }
     else
     {
@@ -52,11 +52,30 @@ void on_http_event(struct mg_connection *c, int ev, void *ev_data, void *fn_data
     {
         const char *message = (char *)ev_data;
         on_error(message);
+        return;
     }
-    else if(ev == MG_EV_HTTP_MSG)
+    
+    bool is_message = (ev == MG_EV_HTTP_MSG || ev == MG_EV_HTTP_CHUNK);
+    if(!is_message) return;
+
+    struct mg_http_message *hm = (struct mg_http_message *)ev_data;
+    const char *dir = (const char *)fn_data;
+    
+    if(ev == MG_EV_HTTP_MSG)
     {
-        struct mg_http_message *hm = (struct mg_http_message *)ev_data;
-        const char *dir = (const char *)fn_data;
         on_http_message(c, hm, dir);
-    } 
+    }
+    else if(ev == MG_EV_HTTP_CHUNK && mg_http_match_uri(hm, ENDPOINT_UPLOAD))
+    {
+        if(hm->chunk.len > 0)
+            handle_upload(hm, hm->chunk, dir);
+
+        mg_http_delete_chunk(c, hm);
+
+        if(hm->chunk.len == 0)
+        {
+            printf("[UPLOAD] Successful.\n");
+            http_reply_status(c, OK, 0);
+        }
+    }
 }

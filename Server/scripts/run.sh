@@ -25,7 +25,7 @@ EXE="${SCRIPT_DIR}/../${TARGET}"
 MEDIA_DIR="${HOME}/Desktop/Media"
 
 # Max receive buffer size
-MAX_RECV_SIZE="$((900 * 1024 * 1024))" # 900MB
+MAX_RECV_SIZE="$((10 * 1024 * 1024))" # 10MB
 
 # ============================== Functions ==============================
 

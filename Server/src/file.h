@@ -9,6 +9,6 @@
 #define HEADER_FILE_NAME "X-File-Name"
 
 const char *make_file_url(struct mg_http_message *hm, const char *dir);
-int write_file(const uint8_t *data, size_t n_bytes, const char *url);
+int append_file(const uint8_t *data, size_t n_bytes, const char *url);
 
 #endif

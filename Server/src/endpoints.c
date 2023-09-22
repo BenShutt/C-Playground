@@ -32,18 +32,15 @@ error:
     return -1;
 }
 
-int handle_upload(struct mg_http_message *hm, const char *dir)
+int handle_upload(struct mg_http_message *hm, struct mg_str data, const char *dir)
 {
     // Make URL
     char *url = (char *)make_file_url(hm, dir);
     check(url != NULL, "Failed to make URL.");
 
     // Write HTTP body to file
-    int rc = write_file((u_int8_t *)hm->body.ptr, hm->body.len, url);
+    int rc = append_file((u_int8_t *)data.ptr, data.len, url);
     check(rc == 0, "Failed to write file.");
-
-    // Print success
-    printf("[UPLOAD] %ld bytes successfully written to '%s'.\n", hm->body.len, url);
     
     // Clean up and return success
     free(url);
