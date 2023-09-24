@@ -17,7 +17,7 @@ To run the program, install dependencies (only needs to be done once) then run:
 ./scripts/run.sh
 ```
 
-Update the `run.sh` script to point at a different directory or update the `recv` buffer size.
+Update the `run.sh` script to point at a different directory.
 
 ## IP Address
 
@@ -29,12 +29,12 @@ ipconfig getifaddr en0
 
 Then the server will connect to port `8000`.
 
-You will need this if connecting from a device that is not hosting the server (e.g. mobile to laptop).
+This is needed if connecting from a device that is not hosting the server (e.g. mobile to laptop) but is on the same WIFI.
 
 ## Uploads
 
 As documented in Mongoose's [File Uploads](https://mongoose.ws/documentation/tutorials/file-uploads/#binary-upload-single-post) tutorial, single POST uploads are handled in chunks.
-These are handled as separate `MG_EV_HTTP_CHUNK` events opposed to the usual `MG_EV_HTTP_MSG`.
+These are delivered as separate `MG_EV_HTTP_CHUNK` events opposed to the usual `MG_EV_HTTP_MSG`.
 This enables us to break up large request bodies into smaller parts.
 
 The client must consequentially use, say, [upload](https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#uploading-data-to-a-server) for this to work.
