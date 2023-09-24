@@ -31,6 +31,14 @@ Then the server will connect to port `8000`.
 
 You will need this if connecting from a device that is not hosting the server (e.g. mobile to laptop).
 
+## Uploads
+
+As documented in Mongoose's [File Uploads](https://mongoose.ws/documentation/tutorials/file-uploads/#binary-upload-single-post) tutorial, single POST uploads are handled in chunks.
+These are handled as separate `MG_EV_HTTP_CHUNK` events opposed to the usual `MG_EV_HTTP_MSG`.
+This enables us to break up large request bodies into smaller parts.
+
+The client must consequentially use, say, [upload](https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#uploading-data-to-a-server) for this to work.
+
 ## Bytes
 
 To print the bytes of a file:
@@ -49,15 +57,3 @@ xxd /path/to/file
 * [Makefile SO Post](https://stackoverflow.com/questions/30573481)
 * [LCTHW](https://github.com/zedshaw/learn-c-the-hard-way-lectures)
 * [Building a Static Library](https://www.oreilly.com/library/view/c-cookbook/0596007612/ch01s04.html)
-
-## TODO
-
-Sometimes, rarely, a request *seems* to hang.
-I am not entirely sure at this point where in the chain of operations this happens.
-Some options it could be:
-
-* Mongoose request handler or poll/listen
-* Writing of the file to disk
-* Client-side issue
-
-It is worth remarking that the request bodies may be unusually large.
