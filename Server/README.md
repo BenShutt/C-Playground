@@ -37,7 +37,7 @@ As documented in Mongoose's [File Uploads](https://mongoose.ws/documentation/tut
 These are delivered as separate `MG_EV_HTTP_CHUNK` events opposed to the usual `MG_EV_HTTP_MSG`.
 This enables us to break up large request bodies into smaller parts.
 
-The client must consequentially use, say, [upload](https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#uploading-data-to-a-server) for this to work.
+Consequentially, the client must use, say, [upload](https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#uploading-data-to-a-server) for this to work.
 
 ## Bytes
 
