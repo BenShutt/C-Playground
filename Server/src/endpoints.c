@@ -11,6 +11,7 @@
 
 int handle_status()
 {
+    printf("[STATUS] success.\n");
     return 0;
 }
 
@@ -32,15 +33,23 @@ error:
     return -1;
 }
 
-int handle_upload(struct mg_http_message *hm, struct mg_str data, const char *dir)
+int handle_upload(struct mg_http_message *hm, struct mg_str data, const char *dir, bool is_end)
 {
     // Make URL
     char *url = (char *)make_file_url(hm, dir);
     check(url != NULL, "Failed to make URL.");
 
-    // Write HTTP body to file
-    int rc = append_file((u_int8_t *)data.ptr, data.len, url);
-    check(rc == 0, "Failed to write file.");
+    if(is_end)
+    {
+        // Log success at end
+        printf("[UPLOAD] successfully written to '%s'.\n", url);
+    }
+    else
+    {
+        // Write HTTP body to file
+        int rc = append_file((u_int8_t *)data.ptr, data.len, url);
+        check(rc == 0, "Failed to write file.");
+    }
     
     // Clean up and return success
     free(url);

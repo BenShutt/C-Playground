@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "request.h"
 #include "endpoints.h"
@@ -68,13 +69,15 @@ void on_http_event(struct mg_connection *c, int ev, void *ev_data, void *fn_data
     else if(ev == MG_EV_HTTP_CHUNK && mg_http_match_uri(hm, ENDPOINT_UPLOAD))
     {
         if(hm->chunk.len > 0)
-            handle_upload(hm, hm->chunk, dir);
+        {
+            handle_upload(hm, hm->chunk, dir, false);
+        }
 
         mg_http_delete_chunk(c, hm);
 
         if(hm->chunk.len == 0)
         {
-            printf("[UPLOAD] Successful.\n");
+            handle_upload(hm, hm->chunk, dir, true);
             http_reply_status(c, OK, 0);
         }
     }
