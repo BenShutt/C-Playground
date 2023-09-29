@@ -51,8 +51,7 @@ xxd /path/to/file
 
 * [Mongoose](https://github.com/cesanta/mongoose)
 
-## References
+## Further References
 
-* [Makefile SO Post](https://stackoverflow.com/questions/30573481)
-* [LCTHW](https://github.com/zedshaw/learn-c-the-hard-way-lectures)
+* [Socket](https://github.com/BenShutt/C-Playground/tree/develop/Socket) development on this project (and its references)
 * [Building a Static Library](https://www.oreilly.com/library/view/c-cookbook/0596007612/ch01s04.html)
