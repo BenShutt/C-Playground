@@ -62,7 +62,7 @@ error:
     return NULL;
 }
 
-int append_file(const uint8_t *data, size_t n_bytes, const char *url)
+int append_to_file(const uint8_t *data, size_t n_bytes, const char *url)
 {
     // Pointers to free on error
     FILE *file = NULL;

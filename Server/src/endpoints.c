@@ -47,7 +47,7 @@ int handle_upload(struct mg_http_message *hm, struct mg_str data, const char *di
     else
     {
         // Write HTTP body to file
-        int rc = append_file((u_int8_t *)data.ptr, data.len, url);
+        int rc = append_to_file((u_int8_t *)data.ptr, data.len, url);
         check(rc == 0, "Failed to write file.");
     }
     
