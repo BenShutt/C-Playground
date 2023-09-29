@@ -41,15 +41,16 @@ static void on_http_chunk_message(struct mg_connection *c, struct mg_http_messag
 
     if(hm->chunk.len > 0)
     {
-        handle_upload(hm, hm->chunk, dir, false);
+        handle_upload(hm, hm->chunk, dir, false); // Error masked
     }
 
     mg_http_delete_chunk(c, hm);
 
     if(hm->chunk.len == 0)
     {
-        handle_upload(hm, hm->chunk, dir, true);
-        http_reply_status(c, OK, 0);
+        int rc = handle_upload(hm, hm->chunk, dir, true);
+        StatusCode status_code = rc == 0 ? OK : BAD_REQUEST;
+        http_reply_status(c, status_code, rc);
     }
 }
 
