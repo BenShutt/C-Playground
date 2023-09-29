@@ -1,4 +1,4 @@
-# Server
+# Socket
 
 A simple socket TCP server written in C.
 
