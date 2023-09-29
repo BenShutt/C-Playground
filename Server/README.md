@@ -53,7 +53,6 @@ xxd /path/to/file
 
 ## References
 
-* [IBM C socket TCP server](https://www.ibm.com/docs/en/zos/2.5.0?topic=programs-c-socket-tcp-server)
 * [Makefile SO Post](https://stackoverflow.com/questions/30573481)
 * [LCTHW](https://github.com/zedshaw/learn-c-the-hard-way-lectures)
 * [Building a Static Library](https://www.oreilly.com/library/view/c-cookbook/0596007612/ch01s04.html)
