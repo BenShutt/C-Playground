@@ -53,5 +53,5 @@ xxd /path/to/file
 
 ## Further References
 
-* [Socket](https://github.com/BenShutt/C-Playground/tree/develop/Socket) development on this project (and its references)
+* [Socket](https://github.com/BenShutt/C-Playground/tree/develop/Socket)
 * [Building a Static Library](https://www.oreilly.com/library/view/c-cookbook/0596007612/ch01s04.html)
