@@ -20,7 +20,7 @@ static void on_http_message(struct mg_connection *c, struct mg_http_message *hm,
     else if(mg_http_match_uri(hm, ENDPOINT_EXISTS))
     {
         int rc = handle_exists(hm, dir);
-        int status_code = rc >= 0 ? OK : BAD_REQUEST;
+        StatusCode status_code = rc >= 0 ? OK : BAD_REQUEST;
         http_reply_status(c, status_code, rc);
     }
     else if(mg_http_match_uri(hm, ENDPOINT_UPLOAD))
