@@ -5,9 +5,9 @@
 
 typedef struct Matrix 
 {
-    double *data;
     size_t n_rows;
     size_t n_columns;
+    double *data;
 } Matrix;
 
 Matrix* Matrix_init(size_t n_rows, size_t n_columns);

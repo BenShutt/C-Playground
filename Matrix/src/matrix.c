@@ -11,6 +11,8 @@ Matrix* Matrix_init(size_t n_rows, size_t n_columns)
     Matrix *matrix = (Matrix *)malloc(sizeof(Matrix));
     check_memory(matrix);
 
+    matrix->n_rows = n_rows;
+    matrix->n_columns = n_columns;
     matrix->data = (double *)calloc(n_rows * n_columns, sizeof(double));
     check_memory(matrix->data);
 
