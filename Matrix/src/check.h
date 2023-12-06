@@ -19,7 +19,7 @@
 
 #define check_memory(C) check((C) != NULL, "Memory error.")
 
-#define assert(C, ...) if(!(C)) {\
+#define assert(C, M, ...) if(!(C)) {\
     log_error(M, ##__VA_ARGS__);\
     exit(EXIT_FAILURE);}
 

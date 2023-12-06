@@ -44,12 +44,12 @@ static size_t Matrix_index(Matrix *matrix, size_t row, size_t column)
 
 double Matrix_get(Matrix *matrix, size_t row, size_t column)
 {
-    size_t index = Matrix_index(matrix);
+    size_t index = Matrix_index(matrix, row, column);
     return matrix->data[index];
 }
 
 void Matrix_set(Matrix *matrix, size_t row, size_t column, double value)
 {
-    size_t index = Matrix_index(matrix);
+    size_t index = Matrix_index(matrix, row, column);
     matrix->data[index] = value;
 }
