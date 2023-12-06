@@ -8,7 +8,7 @@ static void test_get(Matrix *matrix, size_t row, size_t column, double value)
 {
     bool is_correct = Matrix_get(matrix, row, column) == value;
     const char *message = is_correct ? "Correct" : "Incorrect";
-    printf("(%ld, %ld) %s.\n", row, column, message);
+    printf("(row=%ld, col=%ld) %s.\n", row, column, message);
 }
 
 int main()
