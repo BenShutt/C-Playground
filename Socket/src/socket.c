@@ -10,7 +10,7 @@
 #define NL "\r\n"
 
 // HTTP response to send to the client from the server
-const char *make_http_response() // Private
+static const char *make_http_response()
 {
     return "HTTP/1.1 200 OK" NL
         "Connection: Close" NL
@@ -18,7 +18,7 @@ const char *make_http_response() // Private
         "Received" NL;
 }
 
-int fd_close(int fd) // Private
+static int fd_close(int fd)
 {
     if(fd != -1) 
     {
@@ -115,14 +115,14 @@ error:
     return -1;
 }
 
-void print_message(char *message) // Private
+static void print_message(char *message)
 {
     printf("========== Start ==========\n");
     printf("%s\n", message);
     printf("========== End ==========\n");
 }
 
-void socket_close(int socket_fd, int connection_fd, char *buf) // Private
+static void socket_close(int socket_fd, int connection_fd, char *buf)
 {
     if(buf) free(buf);
     fd_close(connection_fd);
