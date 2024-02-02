@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "check.h"
 #include "matrix.h"
 
 static void test_get(Matrix *matrix, size_t row, size_t column, double value)
@@ -14,7 +15,7 @@ static void test_get(Matrix *matrix, size_t row, size_t column, double value)
 int main()
 {
     Matrix *matrix = Matrix_init(2, 3);
-    if(!matrix) return EXIT_FAILURE;
+    check_memory(matrix);
 
     Matrix_set(matrix, 0, 0, 1);
     Matrix_set(matrix, 0, 1, 2);
@@ -32,4 +33,7 @@ int main()
 
     Matrix_deinit(matrix);
     return EXIT_SUCCESS;
+
+error:
+    return EXIT_FAILURE;
 }
