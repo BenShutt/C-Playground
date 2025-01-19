@@ -19,6 +19,11 @@ To run the program, install dependencies (only needs to be done once) then run:
 
 Update the `run.sh` script to point at a different directory.
 
+## Warning
+
+Mongoose has had significant updates since this was written.
+For now, an older tag is checked out.
+
 ## IP Address
 
 To get the wireless IP:

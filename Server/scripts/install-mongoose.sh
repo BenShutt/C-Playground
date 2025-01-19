@@ -28,8 +28,11 @@ TARGET="mongoose"
 # Local tmp directory
 TMP_DIR="/tmp/${TARGET}"
 
+# Tagged version to checkout, could also be a branch or commit
+VERSION="7.11" # master
+
 # Github raw-content URL to download source files from
-REMOTE_URL="https://raw.githubusercontent.com/cesanta/mongoose/master"
+REMOTE_URL="https://raw.githubusercontent.com/cesanta/mongoose/${VERSION}"
 
 # ============================== Functions ==============================
 
