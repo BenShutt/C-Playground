@@ -6,18 +6,21 @@ Files are uploaded via a HTTP request and written to a local directory.
 
 There is a companion [MediaExport](https://github.com/BenShutt/MediaExport) iOS app. The client syncs the media (images, videos, etc) on the device with the server over the WIFI.
 
-While this server successfully syncs files with a client, it was built for learning purposes and there are better ways to do it - i.e. do not use in production!
-
 ## Usage
 
-To run the program, install dependencies (only needs to be done once) then run:
+Before running, install dependencies (only needs to be done once):
 
 ```bash
 ./scripts/install-mongoose.sh
+```
+
+Then, to run the program: 
+
+```bash
 ./scripts/run.sh
 ```
 
-Update the `run.sh` script to point at a different directory.
+Update the `run.sh` script to point at a different directory, if needed.
 
 ## Warning
 
