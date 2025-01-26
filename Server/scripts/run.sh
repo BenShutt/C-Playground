@@ -38,13 +38,17 @@ function run {
     "${EXE}" "${MEDIA_DIR}"
 }
 
+function getHost {
+    ipconfig getifaddr en0
+}
+
 # ============================== Main ==============================
 
 # Make the directory if it doesn't exist
 mkdir -p "${MEDIA_DIR}"
 
 # Print host
-echo "Set host to '$(ipconfig getifaddr en0)'."
+echo "Set host to '$(getHost)'."
 
 # Clean, make, and run the executable
 clean && build && run && clean
