@@ -43,5 +43,8 @@ function run {
 # Make the directory if it doesn't exist
 mkdir -p "${MEDIA_DIR}"
 
+# Print host
+echo "Set host to '$(ipconfig getifaddr en0)'."
+
 # Clean, make, and run the executable
 clean && build && run && clean
